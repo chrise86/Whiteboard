@@ -11,7 +11,109 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121102005327) do
+ActiveRecord::Schema.define(:version => 20121102023107) do
+
+  create_table "calendar_preferences", :force => true do |t|
+    t.integer  "userID"
+    t.boolean  "gradesShown"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "categories", :force => true do |t|
+    t.integer  "userID"
+    t.float    "weight"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "courses", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "events", :force => true do |t|
+    t.string   "title"
+    t.datetime "start"
+    t.datetime "end"
+    t.integer  "categoryID"
+    t.text     "description"
+    t.string   "attachment"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "gradebooks", :force => true do |t|
+    t.integer  "eventID"
+    t.integer  "sectionID"
+    t.integer  "userID"
+    t.float    "grade"
+    t.string   "attachment"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "multiple_choices", :force => true do |t|
+    t.integer  "eventID"
+    t.integer  "questionID"
+    t.string   "choice1"
+    t.string   "choice2"
+    t.string   "choice3"
+    t.string   "choice4"
+    t.integer  "answer"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "professor_events", :force => true do |t|
+    t.integer  "userID"
+    t.integer  "eventID"
+    t.integer  "courseID"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "questions", :force => true do |t|
+    t.integer  "eventID"
+    t.integer  "type"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "section_events", :force => true do |t|
+    t.integer  "sectionID"
+    t.integer  "eventID"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "sections", :force => true do |t|
+    t.integer  "courseID"
+    t.integer  "sectionNumber"
+    t.integer  "semesterID"
+    t.string   "professor"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "user_responses", :force => true do |t|
+    t.integer  "eventID"
+    t.integer  "userID"
+    t.integer  "questionID"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "user_sections", :force => true do |t|
+    t.integer  "userID"
+    t.integer  "sectionID"
+    t.float    "grade"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

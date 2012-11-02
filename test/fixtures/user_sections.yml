@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  userID: 1
+  sectionID: 1
+  grade: 1.5
+
+two:
+  userID: 1
+  sectionID: 1
+  grade: 1.5

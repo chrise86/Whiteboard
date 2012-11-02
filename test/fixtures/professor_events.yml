@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  userID: 1
+  eventID: 1
+  courseID: 1
+
+two:
+  userID: 1
+  eventID: 1
+  courseID: 1
