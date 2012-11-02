@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  eventID: 1
+  questionID: 1
+  choice1: MyString
+  choice2: MyString
+  choice3: MyString
+  choice4: MyString
+  answer: 1
+
+two:
+  eventID: 1
+  questionID: 1
+  choice1: MyString
+  choice2: MyString
+  choice3: MyString
+  choice4: MyString
+  answer: 1
