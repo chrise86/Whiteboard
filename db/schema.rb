@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121104063822) do
+ActiveRecord::Schema.define(:version => 20121102023107) do
 
   create_table "calendar_preferences", :force => true do |t|
     t.integer  "userID"
@@ -53,14 +53,6 @@ ActiveRecord::Schema.define(:version => 20121104063822) do
     t.string   "attachment"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "grades", :id => false, :force => true do |t|
-    t.integer  "gradeID"
-    t.decimal  "grade",      :precision => 2, :scale => 5
-    t.string   "file"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
   end
 
   create_table "multiple_choices", :force => true do |t|

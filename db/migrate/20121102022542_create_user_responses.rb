@@ -1,9 +1,9 @@
 class CreateUserResponses < ActiveRecord::Migration
   def change
     create_table :user_responses do |t|
-      t.integer :multipleChoiceID, :null => false
-      t.integer :userID, :null => false
-      t.string :userResponse
+      t.integer :eventID
+      t.integer :userID
+      t.integer :questionID
 
       t.timestamps
     end
