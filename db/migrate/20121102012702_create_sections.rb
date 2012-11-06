@@ -4,7 +4,6 @@ class CreateSections < ActiveRecord::Migration
       t.integer :course_id
       t.integer :section_number
       t.integer :semester_id
-      t.string :professor
 
       t.timestamps
     end
