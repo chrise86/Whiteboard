@@ -6,29 +6,41 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+
+################### User #########################
+
 User.create(first_name: "Derek",
             last_name: "Cannon",
             email: "derek@derekcannon.com",
-            password: "secret")
+            password: "secret",
+            role: 0)
 
 User.create(first_name: "Ian",
             last_name: "Graham",
             email: "ian@iangraham.com",
-            password: "another_secret")
+            password: "another_secret",
+            role: 0)
 
 User.create(first_name: "Drew",
             last_name: "Stephenson",
             email: "drew@drewstephenson.com",
-            password: "shhh_secret")
+            password: "shhh_secret",
+            role: 1)
 
 User.create(first_name: "Ryan",
             last_name: "DeMaeyor",
             email: "ryan@ryandemaeyor.com",
-            password: "last_secret")
+            password: "last_secret",
+            role: 1)
 
 95.times do |t|
   User.create(first_name: "Test",
               last_name: "User#{t.to_s}",
               email: "tuser#{t.to_s}@atestuser.com",
-              password: "secretpassword#{t.to_s}")
+              password: "secretpassword#{t.to_s}",
+              role: 1)
 end
+
+################### Section #########################
+
+################### UserSection #########################

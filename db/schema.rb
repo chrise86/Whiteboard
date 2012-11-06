@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121105210052) do
+ActiveRecord::Schema.define(:version => 20121104063822) do
 
   create_table "calendar_preferences", :force => true do |t|
     t.integer  "userID"
@@ -53,11 +53,12 @@ ActiveRecord::Schema.define(:version => 20121105210052) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "grades", :primary_key => "gradeID", :force => true do |t|
-    t.decimal  "grade",      :precision => 2, :scale => 5
+  create_table "grades", :force => true do |t|
+    t.integer  "gradebookID"
+    t.decimal  "grade",       :precision => 2, :scale => 5
     t.string   "file"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
   end
 
   create_table "multiple_choices", :force => true do |t|
@@ -104,19 +105,19 @@ ActiveRecord::Schema.define(:version => 20121105210052) do
   end
 
   create_table "user_responses", :force => true do |t|
+    t.integer  "multipleChoiceID"
     t.integer  "userID"
+    t.string   "userResponse"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.integer  "multipleChoiceID"
-    t.string   "userResponse"
   end
 
   create_table "user_sections", :force => true do |t|
     t.integer  "userID"
     t.integer  "sectionID"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.float    "grade"
+    t.decimal  "grade",      :precision => 2, :scale => 5
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -130,6 +131,9 @@ ActiveRecord::Schema.define(:version => 20121105210052) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "role"
+    t.string   "first_name"
+    t.string   "last_name"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
   end
