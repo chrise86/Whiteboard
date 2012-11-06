@@ -43,4 +43,36 @@ end
 
 ################### Section #########################
 
+Section.create(course_id: 0,
+               section_number: 0,
+               semester_id: 0,
+               professor: "Richard Price")
+
+Section.create(course_id: 1,
+               section_number: 0,
+               semester_id: 1,
+               professor: "Michael Morton")
+
+Section.create(course_id: 2,
+               section_number: 0,
+               semester_id: 2,
+               professor: "Evelyn Brannock")
+
+Section.create(course_id: 3,
+               section_number: 0,
+               semester_id: 1,
+               professor: "Peter Meso")
+
+Section.create(course_id: 4,
+               section_number: 0,
+               semester_id: 0,
+               professor: "Mr. Anonymous")
+
+15.times do |t|
+  Section.create(course_id: rand(5),
+                 section_number: rand(10),
+                 semester_id: rand(3),
+                 professor: "Dr. Professor #{t.to_s}")
+end
+
 ################### UserSection #########################
