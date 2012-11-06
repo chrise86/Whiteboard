@@ -44,3 +44,13 @@ end
 ################### Section #########################
 
 ################### UserSection #########################
+
+user_size = User.all.size
+section_size = Section.all.size
+
+2000.times do |t|
+  user_random = rand(user_size)
+  section_random = rand(section_size)
+  grade_random = random(101)
+  UserSection.create(user_id: user_random, section_id: section_size, grade: grade_random)
+end
