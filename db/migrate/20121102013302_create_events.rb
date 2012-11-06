@@ -4,7 +4,7 @@ class CreateEvents < ActiveRecord::Migration
       t.string :title
       t.datetime :start
       t.datetime :end
-      t.integer :categoryID
+      t.integer :category_id
       t.text :description
       t.string :attachment
 

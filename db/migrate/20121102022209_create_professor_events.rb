@@ -1,9 +1,9 @@
 class CreateProfessorEvents < ActiveRecord::Migration
   def change
     create_table :professor_events do |t|
-      t.integer :userID
-      t.integer :eventID
-      t.integer :courseID
+      t.integer :user_id
+      t.integer :event_id
+      t.integer :course_id
 
       t.timestamps
     end

@@ -1,7 +1,7 @@
 class CreateQuestions < ActiveRecord::Migration
   def change
     create_table :questions do |t|
-      t.integer :eventID
+      t.integer :event_id
       t.integer :type
       t.text :description
 
