@@ -58,18 +58,14 @@ section_size = Section.all.size
   user_random = rand(user_size)
   section_random = rand(section_size)
   grade_random = random(101)
-  UserSection.create(user_id: user_random, section_id: section_size, grade: grade_random)
+  UserSection.create(user_id: user_random, section_id: section_random, grade: grade_random)
 end
-
-user_sections_size = UserSection.all.size
 
 ################### Course #########################
 
 5.times do |t|
   Course.create(name: "ITEC1#{t.to_s}01")
 end
-
-course_size = Course.all.size
 
 ################### Category #########################
 
@@ -91,6 +87,15 @@ category_size = Category.all.size
                category_id: rand(category_size),
                description: "",
                attachment: "")
+end
+
+################### SectionEvent #########################
+
+20.times do |s|
+  50.times do |e|
+    SectionEvent.create(section_id: s,
+                        event_id: e)
+  end
 end
 
 ################### CalendarPreferences ########################
