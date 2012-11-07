@@ -1,2 +1,9 @@
-<h1>Calendar#index</h1>
-<p>Find me in app/views/calendar/index.html.erb</p>
+<h1>Calendar for <%= @user.first_name + " " + @user.last_name %></h1>
+
+<p>Here is the information:</p>
+
+<ul>
+    <% @section.each do |s|  %>
+        <li><%=	 Course.find_by_id(s.course_id).name %></li>
+    <% end %>
+</ul>

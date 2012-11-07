@@ -44,9 +44,9 @@ end
 ################### Section #########################
 
 20.times do |t|
-  Section.create(course_id: rand(5),
+  Section.create(course_id: rand(5) + 1,
                  section_number: rand(10),
-                 semester_id: rand(3))
+                 semester_id: rand(3) + 1)
 end
 
 ################### UserSection #########################
@@ -54,11 +54,13 @@ end
 user_size = User.all.size
 section_size = Section.all.size
 
-2000.times do |t|
-  user_random = rand(user_size)
-  section_random = rand(section_size)
-  grade_random = random(101)
-  UserSection.create(user_id: user_random, section_id: section_random, grade: grade_random)
+24.times do |u|
+  20.times do |s|
+    user_random = rand(user_size) + 1
+    section_random = rand(section_size) + 1
+    grade_random = rand(101)
+    UserSection.create(user_id: user_random, section_id: section_random, grade: grade_random)
+  end
 end
 
 ################### Course #########################
@@ -72,7 +74,7 @@ end
 10.times do |t|
   Category.create(weight: (rand(26)*rand()),
                   name: "Chapter #{t.to_s}",
-                  user_id: rand(user_size))
+                  user_id: rand(user_size) + 1)
 end
 
 category_size = Category.all.size
@@ -84,7 +86,7 @@ category_size = Category.all.size
   Event.create(title: "Event #{t.to_s}",
                start: Time.now + rand_time,
                end: Time.now + 3600 + rand_time,
-               category_id: rand(category_size),
+               category_id: rand(category_size) + 1,
                description: "",
                attachment: "")
 end
@@ -101,16 +103,17 @@ end
 ################### CalendarPreferences ########################
 
 100.times do |t|
-  CalendarPreferences.create(user_id: rand(user_size),
+  CalendarPreferences.create(user_id: rand(user_size) + 1,
                              grades_shown: true)
 end
 
 ################### Gradebook #########################
 
-100.times do |u|
-  20.times do |s|
+24.times do |u|
+  4.times do |s|
     50.times do |e|
-      Gradebook.create(user_id: u,
+      user_random = rand(user_size) + 1
+      Gradebook.create(user_id: user_random,
                        section_id: s,
                        event_id: e)
     end
@@ -119,7 +122,7 @@ end
 
 ################### Grade #########################
 
-100000.times do |t|
+4800.times do |t|
   Grade.create(gradebook_id: t,
                grade: rand(101),
                file: "")
@@ -127,8 +130,8 @@ end
 
 ################### ProfessorEvent #########################
 
-100.times do |u|
-  50.times do |e|
+2.times do |u|
+  20.times do |e|
     5.times do |c|
       ProfessorEvent.create(user_id: u,
                             event_id: e,
@@ -194,7 +197,7 @@ end
 
 100.times do |u|
   10.times do |r|
-    UserResponse.create(multipleChoice_id: r,
+    UserResponse.create(multiple_choice_id: r,
                         user_id: u,
                         user_response: rand(4))
   end
