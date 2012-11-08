@@ -4,6 +4,15 @@
 
 <ul>
     <% @section.each do |s|  %>
-        <li><%=	 Course.find_by_id(s.course_id).name %></li>
+      <% @section_names.each_with_index do |n, index| %>
+        <li>
+          <%= n %>
+          <ul>
+            <% @events_per_section[index].each do |e|  %>
+                <li><%= e.title %></li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
     <% end %>
 </ul>

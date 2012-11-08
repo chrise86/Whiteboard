@@ -18,4 +18,7 @@ class Section < ActiveRecord::Base
 
     return section
   end
+
+
+
 end
