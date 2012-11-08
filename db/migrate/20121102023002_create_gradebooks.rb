@@ -1,9 +1,9 @@
 class CreateGradebooks < ActiveRecord::Migration
   def change
     create_table :gradebooks do |t|
-      t.integer :eventID, :null => false
-      t.integer :sectionID, :null => false
-      t.integer :userID, :null => false
+      t.integer :event_id
+      t.integer :section_id
+      t.integer :user_id
 
       t.timestamps
     end

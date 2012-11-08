@@ -1,2 +1,18 @@
-<h1>Calendar#index</h1>
-<p>Find me in app/views/calendar/index.html.erb</p>
+<h1>Calendar for <%= @user.first_name + " " + @user.last_name %></h1>
+
+<p>Here is the information:</p>
+
+<ul>
+    <% @section.each do |s|  %>
+      <% @section_names.each_with_index do |n, index| %>
+        <li>
+          <%= n %>
+          <ul>
+            <% @events_per_section[index].each do |e|  %>
+                <li><%= e.title %></li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    <% end %>
+</ul>

@@ -11,17 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121105210052) do
+ActiveRecord::Schema.define(:version => 20121104063822) do
 
   create_table "calendar_preferences", :force => true do |t|
-    t.integer  "userID"
-    t.boolean  "gradesShown"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "user_id"
+    t.boolean  "grades_shown"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "categories", :force => true do |t|
-    t.integer  "userID"
+    t.integer  "user_id"
     t.float    "weight"
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(:version => 20121105210052) do
     t.string   "title"
     t.datetime "start"
     t.datetime "end"
-    t.integer  "categoryID"
+    t.integer  "category_id"
     t.text     "description"
     t.string   "attachment"
     t.datetime "created_at",  :null => false
@@ -46,41 +46,42 @@ ActiveRecord::Schema.define(:version => 20121105210052) do
   end
 
   create_table "gradebooks", :force => true do |t|
-    t.integer  "eventID"
-    t.integer  "sectionID"
-    t.integer  "userID"
+    t.integer  "event_id"
+    t.integer  "section_id"
+    t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "grades", :primary_key => "gradeID", :force => true do |t|
-    t.decimal  "grade",      :precision => 2, :scale => 5
+  create_table "grades", :force => true do |t|
+    t.integer  "gradebook_id"
+    t.decimal  "grade",        :precision => 2, :scale => 5
     t.string   "file"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
   end
 
   create_table "multiple_choices", :force => true do |t|
-    t.integer  "questionID"
-    t.string   "choice1"
-    t.string   "choice2"
-    t.string   "choice3"
-    t.string   "choice4"
+    t.integer  "question_id"
+    t.string   "choice_1"
+    t.string   "choice_2"
+    t.string   "choice_3"
+    t.string   "choice_4"
     t.integer  "answer"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "professor_events", :force => true do |t|
-    t.integer  "userID"
-    t.integer  "eventID"
-    t.integer  "courseID"
+    t.integer  "user_id"
+    t.integer  "event_id"
+    t.integer  "course_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "questions", :force => true do |t|
-    t.integer  "eventID"
+    t.integer  "event_id"
     t.integer  "type"
     t.text     "description"
     t.datetime "created_at",  :null => false
@@ -88,35 +89,34 @@ ActiveRecord::Schema.define(:version => 20121105210052) do
   end
 
   create_table "section_events", :force => true do |t|
-    t.integer  "sectionID"
-    t.integer  "eventID"
+    t.integer  "section_id"
+    t.integer  "event_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "sections", :force => true do |t|
-    t.integer  "courseID"
-    t.integer  "sectionNumber"
-    t.integer  "semesterID"
-    t.string   "professor"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "course_id"
+    t.integer  "section_number"
+    t.integer  "semester_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "user_responses", :force => true do |t|
-    t.integer  "userID"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.integer  "multipleChoiceID"
-    t.string   "userResponse"
+    t.integer  "multiple_choice_id"
+    t.integer  "user_id"
+    t.string   "user_response"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "user_sections", :force => true do |t|
-    t.integer  "userID"
-    t.integer  "sectionID"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.float    "grade"
+    t.integer  "user_id"
+    t.integer  "section_id"
+    t.decimal  "grade",      :precision => 2, :scale => 5
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -130,6 +130,9 @@ ActiveRecord::Schema.define(:version => 20121105210052) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "role"
+    t.string   "first_name"
+    t.string   "last_name"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
   end

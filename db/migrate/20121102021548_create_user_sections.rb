@@ -1,8 +1,8 @@
 class CreateUserSections < ActiveRecord::Migration
   def change
     create_table :user_sections do |t|
-      t.integer :userID, :null => false
-      t.integer :sectionID, :null => false
+      t.integer :user_id
+      t.integer :section_id
       t.decimal :grade, :scale => 5, :precision => 2
 
       t.timestamps
