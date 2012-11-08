@@ -34,47 +34,64 @@ User.create(first_name: "Ryan",
             role: 1)
 
 95.times do |t|
-  User.create(first_name: "Test",
+  User.create(first_name: "Test #{t.to_s}",
               last_name: "User#{t.to_s}",
               email: "tuser#{t.to_s}@atestuser.com",
               password: "secretpassword#{t.to_s}",
               role: 1)
 end
 
+################### Course #########################
+
+3.times do |t|
+  5.times do |u|
+    Course.create(name: "ITEC#{(t+1).to_s}#{u.to_s}01")
+  end
+end
+
+course_size = Course.all.size
+
 ################### Section #########################
 
-20.times do |t|
-  Section.create(course_id: rand(5) + 1,
-                 section_number: rand(10),
-                 semester_id: rand(3) + 1)
+course_size.times do |course|
+  5.times do |section|
+    Section.create(course_id: course + 1,
+                   section_number: section + 1,
+                   semester_id: rand(3) + 1)
+  end
 end
 
 ################### UserSection #########################
 
 user_size = User.all.size
-section_size = Section.all.size
 
-24.times do |u|
-  20.times do |s|
-    user_random = rand(user_size) + 1
-    section_random = rand(section_size) + 1
+user_size.times do |u|
+  courses = Course.all.sample(4)
+  courses.each do |c|
+    sections = Section.where(:course_id => c.id)
     grade_random = rand(101)
-    UserSection.create(user_id: user_random, section_id: section_random, grade: grade_random)
+    UserSection.create(user_id: (u+1), section_id: sections.sample().id, grade: grade_random)
   end
-end
-
-################### Course #########################
-
-5.times do |t|
-  Course.create(name: "ITEC1#{t.to_s}01")
 end
 
 ################### Category #########################
 
-10.times do |t|
-  Category.create(weight: (rand(26)*rand()),
-                  name: "Chapter #{t.to_s}",
-                  user_id: rand(user_size) + 1)
+2.times do |t|
+  Category.create(weight: 25.00,
+                  name: "Test",
+                  user_id: t)
+
+  Category.create(weight: 15.00,
+                  name: "Quiz",
+                  user_id: t)
+
+  Category.create(weight: 15.00,
+                  name: "Assignment",
+                  user_id: t)
+
+  Category.create(weight: 45.00,
+                  name: "Project",
+                  user_id: t)
 end
 
 category_size = Category.all.size
