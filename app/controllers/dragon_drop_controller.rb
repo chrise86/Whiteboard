@@ -1,22 +1,40 @@
 class DragonDropController < ApplicationController
-  def add_event_to_section
+  def add_event_to_section(section_id, event_id)
+    SectionEvent.create(section_id: section_id, event_id: event_id)
   end
 
-  def remove_event_from_section
+  def remove_event_from_section(section_event_id)
+    SectionEvent.where(:id => section_event_id).destroy
   end
 
-  def add_category
+  def add_category(user_id, weight, name)
+    Category.create(:user_id => user_id, :weight => weight, :name => name)
   end
 
-  def remove_category
+  def remove_category(category_id)
+    Category.where(:id => category_id).destroy
   end
 
-  def add_event
+  def add_event(title, start_time, end_time, category_id, description, attachment)
+    Event.create(:title => title, :start => start_time, :end => end_time,
+                 :category_id => category_id, :description => description,
+                 :attachment => attachment)
   end
 
-  def remove_event
+  def remove_event(event_id)
+    Event.where(:id => event_id).destroy
   end
 
-  def change_course
+  def change_course(course_id)
+
+  end
+
+  def show(user_id = User.first)
+    sections = Section.all_for_user(user_id)
+    courses = []
+    sections.each do |s|
+      courses << Course.find_by_id(s.course_id)
+    end
+    courses
   end
 end
