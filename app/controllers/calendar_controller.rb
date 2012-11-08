@@ -18,7 +18,7 @@ class CalendarController < ApplicationController
     # Get all the events (in an array) for every section
     @events_per_section = {}
     @section.each do |s|
-      @events_per_section[s.name] SectionEvent.where(:section_id => s.id)
+      @events_per_section[s.name] = SectionEvent.where(:section_id => s.id)
     end
 
 
