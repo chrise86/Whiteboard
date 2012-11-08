@@ -1,5 +1,6 @@
 class SectionController < ApplicationController
-  def add_student
+  def add_student(user_id, section_id)
+    #SectionEvent.create(user_id: user_id, section_id: section_id)
   end
 
   def remove_student
