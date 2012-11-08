@@ -10,7 +10,7 @@ class CalendarController < ApplicationController
       @section << temp
     end
 
-    @section = @section.reject { |x| x.nil? }
+    #@section = @section.reject { |x| x.nil? }
 
   end
 end
