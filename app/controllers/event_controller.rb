@@ -1,48 +1,29 @@
 class EventController < ApplicationController
   #used to create a new event
 
-  def add_question(question_id = 1)
-    #adds the question from the question text field on the assessment creator
-    Question.where(:id => question_id)
-  end
-
+def add_question
+  #data is passed in in the form from ajax as params[:variable name]through ajax to the database
+  Question.create(params[:event_id], params[:question_id], params[:description], params[:choice_1], params[:choice_2], params[:choice_3], params[:choice_4], params[:answer])
+end
 
 def remove_question
-  #removes the question
-end
-
-def add_choice_1
-  #adds choice 1
-end
-
-def add_choice_2
-  #adds choice 2
-end
-
-def add_choice_3
-  #adds choice 3
-end
-
-def add_choice_4
-  #adds choice 4
-end
-
-def add_answer
-  #adds answer
+  #removes the question from the database, simply just calls a query command
+  Question.where(:id => params[:id]).destroy
 end
 
 def add_new_download
+  #takes in a uploaded file from the gui
   #will be added later
 end
 
 def remove_download
+  #takes in a uploaded file from the gui
   #will be added later
 end
 
-def grade_event
-end
-
-def show
+def show(id=1)
+  #shows an event
+  @event = Event.find_by_id(id)
 end
 
 end
