@@ -30,11 +30,10 @@ class DragonDropController < ApplicationController
   end
 
   def show(user_id = User.first)
-    sections = Section.all_for_user(user_id)
-    courses = []
-    sections.each do |s|
-      courses << Course.find_by_id(s.course_id)
-    end
-    courses
+    course_sections = Section.user_course_sections(user_id)
+    #Organize the data so that it can be gotten on the web page.
   end
+
+
+
 end

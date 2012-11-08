@@ -19,6 +19,20 @@ class Section < ActiveRecord::Base
     return section
   end
 
-
+  def self.user_course_sections(user_id)
+    #Get all of the sections for this professor, and show the data for the sections under that course.
+    sections = Section.all_for_user(user_id)
+    courses = []
+    sections.each do |s|
+      a_course = Course.find_by_id(s.course_id)
+      #Make sure that courses has unique entries
+      courses << a_course if courses.include? a_course == false
+    end
+    course_sections = {}
+    courses.each do |course|
+      course_sections[course] = Section.where(:course_id => key.id)
+    end
+    course_sections
+  end
 
 end
