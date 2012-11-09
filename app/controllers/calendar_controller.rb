@@ -5,7 +5,7 @@ class CalendarController < ApplicationController
     @user = User.first
 
     # Get all the sections for that user
-    @section = Section.all_for_user(@user)
+    @section = Section.find_all_for_user(@user)
 
     # Get all the section names for those sections
 
