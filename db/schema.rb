@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(:version => 20121104063822) do
 
   create_table "questions", :force => true do |t|
     t.integer  "event_id"
-    t.integer  "type"
+    t.integer  "category"
     t.text     "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
