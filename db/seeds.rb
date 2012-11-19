@@ -49,28 +49,24 @@ end
   end
 end
 
-course_size = Course.all.size
-
 ################### Section #########################
 
-course_size.times do |course|
+Course.all.each do |course|
   5.times do |section|
-    Section.create(course_id: course + 1,
+    Section.create(course_id: course.id,
                    section_number: section + 1,
-                   semester_id: rand(3) + 1)
+                   semester_id: [1,2,3].sample)
   end
 end
 
 ################### UserSection #########################
 
-user_size = User.all.size
-
-user_size.times do |u|
+User.all.each do |user|
   courses = Course.all.sample(4)
-  courses.each do |c|
-    sections = Section.where(:course_id => c.id)
+  courses.each do |course|
+    sections = Section.where(:course_id => course.id)
     grade_random = rand(101)
-    UserSection.create(user_id: (u+1), section_id: sections.sample().id, grade: grade_random)
+    UserSection.create(user_id: user.id, section_id: sections.sample.id, grade: grade_random)
   end
 end
 
@@ -79,80 +75,80 @@ end
 2.times do |t|
   Category.create(weight: 25.00,
                   name: "Test",
-                  user_id: t)
+                  user_id: t+1)
 
   Category.create(weight: 15.00,
                   name: "Quiz",
-                  user_id: t)
+                  user_id: t+1)
 
   Category.create(weight: 15.00,
                   name: "Assignment",
-                  user_id: t)
+                  user_id: t+1)
 
   Category.create(weight: 45.00,
                   name: "Project",
-                  user_id: t)
+                  user_id: t+1)
 end
-
-category_size = Category.all.size
 
 ################### Event #########################
 
-50.times do |t|
-  rand_time = rand(86400)
-  Event.create(title: "Event #{t.to_s}",
+50.times do |number|
+  rand_time = rand(604800)
+  Event.create(title: "Event #{(number+1).to_s}",
                start: Time.now + rand_time,
-               end: Time.now + 3600 + rand_time,
-               category_id: rand(category_size) + 1,
+               end: Time.now + 4500 + rand_time,
+               category_id: Category.all.sample.id,
                description: "",
                attachment: "")
 end
 
 ################### SectionEvent #########################
 
-20.times do |s|
-  50.times do |e|
-    SectionEvent.create(section_id: s,
-                        event_id: e)
+Section.all.each do |section|
+  Event.all.sample(35).each do |event|
+    SectionEvent.create(section_id: section.id,
+                        event_id: event.id)
   end
 end
 
 ################### CalendarPreferences ########################
 
-100.times do |t|
-  CalendarPreferences.create(user_id: rand(user_size) + 1,
-                             grades_shown: true)
+User.all.each do |user|
+  CalendarPreferences.create(user_id: user.id,
+                             grades_shown: [true, false].sample)
 end
 
 ################### Gradebook #########################
 
-24.times do |u|
-  4.times do |s|
-    50.times do |e|
-      user_random = rand(user_size) + 1
-      Gradebook.create(user_id: user_random,
-                       section_id: s,
-                       event_id: e)
+random_users = User.all.sample(24)
+random_users.each do |user|
+  user_sections = Section.find_all_for_user(user.id)
+  user_sections.each do |section|
+    section_events = Event.find_all_for_section(section.id)
+    section_events.each do |event|
+      Gradebook.create(user_id: user.id,
+                       section_id: section.id,
+                       event_id: event.id)
     end
   end
 end
 
 ################### Grade #########################
 
-4800.times do |t|
-  Grade.create(gradebook_id: t,
+Gradebook.all.each do |grade|
+  Grade.create(gradebook_id: grade.id,
                grade: rand(101),
                file: "")
 end
 
 ################### ProfessorEvent #########################
 
-2.times do |u|
-  20.times do |e|
-    5.times do |c|
-      ProfessorEvent.create(user_id: u,
-                            event_id: e,
-                            course_id: c)
+2.times do |professor|
+  Course.all.each do |course|
+    Event.all.sample(20).each do |event|
+      ProfessorEvent.create(user_id: professor+1,
+                            event_id: event.id,
+                            course_id: course.id)
     end
   end
 end
@@ -201,8 +197,8 @@ Question.create(event_id: nil,
 
 ################### MultipleChoice #########################
 
-10.times do |t|
-  MultipleChoice.create(question_id: t,
+Question.all.each do |question|
+  MultipleChoice.create(question_id: question.id,
                         answer: rand(4),
                         choice_1: "It might be this...",
                         choice_2: "Or this...",
@@ -212,10 +208,10 @@ end
 
 ################### UserResponse #########################
 
-100.times do |u|
-  10.times do |r|
-    UserResponse.create(multiple_choice_id: r,
-                        user_id: u,
-                        user_response: rand(4))
+User.all.each do |user|
+  MultipleChoice.all.each do |multiple_choice|
+    UserResponse.create(multiple_choice_id: multiple_choice.id,
+                        user_id: user.id,
+                        user_response: %W("", "0", "1", "2", "3").sample)
   end
 end
