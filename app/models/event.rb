@@ -7,7 +7,7 @@ class Event < ActiveRecord::Base
   has_many :section_events
   has_many :sections, :through => :section_events
 
-  def self.all_for_section(section_id)
+  def self.find_all_for_section(section_id)
     section_events = SectionEvent.where(:section_id => section_id)
 
     events = []

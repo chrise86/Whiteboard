@@ -3,16 +3,16 @@
 <p>Here is the information:</p>
 
 <ul>
-    <% @section.each do |s|  %>
-      <% @section_names.each_with_index do |n, index| %>
-        <li>
-          <%= n %>
+  <% @sections_events_names.each do |section, events| %>
+      <li>
+        <%= "#{section.to_s}" %>
           <ul>
-            <% @events_per_section[index].each do |e|  %>
-                <li><%= e.title %></li>
-            <% end %>
+              <% events.each do |event| %>
+                  <li>
+                    <%= "#{event.to_s}" %>
+                  </li>
+              <% end %>
           </ul>
-        </li>
-      <% end %>
-    <% end %>
+      </li>
+  <% end %>
 </ul>

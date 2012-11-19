@@ -15,7 +15,7 @@ class DragonDropController < ApplicationController
     Category.where(:id => category_id).destroy
   end
 
-  def add_event(title, start_time, end_time, category_id, description, attachment)
+  def add_event(title, start_time=Time.now, end_time=Time.at_midnight, category_id, description, attachment)
     Event.create(:title => title, :start => start_time, :end => end_time,
                  :category_id => category_id, :description => description,
                  :attachment => attachment)
@@ -33,7 +33,5 @@ class DragonDropController < ApplicationController
     course_sections = Section.user_course_sections(user_id)
     #Organize the data so that it can be gotten on the web page.
   end
-
-
 
 end

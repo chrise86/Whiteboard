@@ -7,7 +7,7 @@ class Section < ActiveRecord::Base
   has_many :events, :through => :section_events
   belongs_to :course, :foreign_key => :course_id
 
-  def self.all_for_user(user_id)
+  def self.find_all_for_user(user_id)
     user_section = UserSection.where(:user_id => user_id)
 
     section = []
