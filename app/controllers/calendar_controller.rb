@@ -2,10 +2,10 @@ class CalendarController < ApplicationController
 
   def index
     # Get a user
-    user = User.first
+    @user = User.first
 
     # Get all the sections for that user
-    sections = Section.find_all_for_user(user.id)
+    sections = @user.find_all_sections
 
     # Get all the section names for those sections
 
