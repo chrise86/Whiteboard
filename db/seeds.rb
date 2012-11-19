@@ -122,7 +122,7 @@ end
 
 random_users = User.all.sample(24)
 random_users.each do |user|
-  user_sections = Section.find_all_for_user(user.id)
+  user_sections = user.find_all_sections
   user_sections.each do |section|
     section_events = Event.find_all_for_section(section.id)
     section_events.each do |event|
@@ -156,43 +156,43 @@ end
 ################### Question #########################
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the first question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the second question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the third question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the fourth question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the fifth question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the sixth question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the seventh question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the eighth question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the ninth question?")
 
 Question.create(event_id: nil,
-                type: 0,
+                category: 0,
                 description: "What is the answer to the tenth question?")
 
 ################### MultipleChoice #########################

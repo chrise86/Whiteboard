@@ -14,4 +14,16 @@ class User < ActiveRecord::Base
   has_many :professor_events
   has_many :user_sections
   has_many :sections, :through => :user_sections
+
+  def find_all_sections
+    user_section = UserSection.where(:user_id => self.id)
+
+    section = []
+    user_section.each do |us|
+      temp = Section.find_by_id(us.section_id)
+      section << temp
+    end
+    section
+  end
+
 end
