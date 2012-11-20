@@ -144,8 +144,10 @@ end
 ################### ProfessorEvent #########################
 
 2.times do |professor|
-  Course.all.each do |course|
-    Event.all.sample(20).each do |event|
+  events = Event.all.sample(30)
+  Course.all.sample(3).each do |course|
+    course_events = events.pop(10)
+    course_events.each do |event|
       ProfessorEvent.create(user_id: professor+1,
                             event_id: event.id,
                             course_id: course.id)
