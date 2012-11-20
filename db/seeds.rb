@@ -93,10 +93,7 @@ end
 ################### Event #########################
 
 50.times do |number|
-  rand_time = rand(604800)
   Event.create(title: "Event #{(number+1).to_s}",
-               start: Time.now + rand_time,
-               end: Time.now + 4500 + rand_time,
                category_id: Category.all.sample.id,
                description: "",
                attachment: "")
@@ -106,8 +103,11 @@ end
 
 Section.all.each do |section|
   Event.all.sample(35).each do |event|
+    rand_time = rand(2.week.to_i)
     SectionEvent.create(section_id: section.id,
-                        event_id: event.id)
+                        event_id: event.id,
+                        start: Time.now + rand_time,
+                        end: Time.now + (1.hour + 15.minute).to_i + rand_time)
   end
 end
 

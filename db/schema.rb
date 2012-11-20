@@ -36,8 +36,6 @@ ActiveRecord::Schema.define(:version => 20121104063822) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
-    t.datetime "start"
-    t.datetime "end"
     t.integer  "category_id"
     t.text     "description"
     t.string   "attachment"
@@ -91,6 +89,8 @@ ActiveRecord::Schema.define(:version => 20121104063822) do
   create_table "section_events", :force => true do |t|
     t.integer  "section_id"
     t.integer  "event_id"
+    t.datetime "start"
+    t.datetime "end"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

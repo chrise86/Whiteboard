@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  attr_accessible :attachment, :category_id, :description, :end, :start, :title
+  attr_accessible :attachment, :category_id, :description, :title
   has_many :gradebooks
   has_many :professor_events
   has_many :questions

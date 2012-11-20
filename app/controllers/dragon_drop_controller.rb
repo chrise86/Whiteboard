@@ -29,9 +29,9 @@ class DragonDropController < ApplicationController
 
   end
 
-  def show(user_id = User.first)
-    course_sections = Section.user_course_sections(user_id)
-    #Organize the data so that it can be gotten on the web page.
+  def show(user_id = User.first.id)
+    professor_events = ProfessorEvent.where(:user_id => user_id)
+
   end
 
 end
