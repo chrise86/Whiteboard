@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EventControllerTest < ActionController::TestCase
+class EventsControllerTest < ActionController::TestCase
   test "should get add_question" do
     get :add_question
     assert_response :success

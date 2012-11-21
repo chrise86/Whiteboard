@@ -1,5 +1,5 @@
-class EventController < ApplicationController
-  #used to create a new event
+class EventsController < ApplicationController
+  #used to create a new events
 
 def add_question
   #data is passed in in the form from ajax as params[:variable name]through ajax to the database
@@ -22,7 +22,7 @@ def remove_download
 end
 
 def show(id=1)
-  #shows an event
+  #shows an events
   @event = Event.find_by_id(id)
 end
 
