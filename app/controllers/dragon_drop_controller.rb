@@ -29,9 +29,8 @@ class DragonDropController < ApplicationController
 
   end
 
-  def show(user_id = User.first.id)
-    professor_events = ProfessorEvent.where(:user_id => user_id)
-
+  def show(user = User.first)
+    @course_events = user.find_professor_sections_events
   end
 
 end

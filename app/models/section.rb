@@ -7,7 +7,7 @@ class Section < ActiveRecord::Base
   has_many :events, :through => :section_events
   belongs_to :course, :foreign_key => :course_id
 
-  def self.user_course_sections(user, course)
+  def self.user_course_sections(user)
     #Get all of the sections for this professor, and show the data for the sections under that course.
     sections = user.find_all_sections
     courses = []
