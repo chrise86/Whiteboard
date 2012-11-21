@@ -58,9 +58,9 @@ class User < ActiveRecord::Base
   def find_professor_sections_events
     course_sections = ProfessorEvent.find_professor_sections(self)
     sections_events = {}
-    course_sections.each do |course, sections|
+    course_sections.keys.each do |course|
       events = self.find_professor_events(course)
-      sections_events[sections] = events
+      sections_events[course_sections] = events
     end
     sections_events
   end

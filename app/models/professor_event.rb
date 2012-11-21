@@ -27,7 +27,7 @@ class ProfessorEvent < ActiveRecord::Base
           new_sections << section if a_section.id.eql?(section.id)
         end
       end
-      courses_sections[course] = new_sections
+      courses_sections[course] = new_sections unless (new_sections.blank?)
     end
     courses_sections
   end

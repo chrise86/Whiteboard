@@ -1,0 +1,25 @@
+<p>Here is the information:</p>
+
+<%= "#{@course_events.class}" %>
+
+<%= "#{@course_sections.class}" %>
+
+<ul>
+  <% @course_sections.each do |course, sections| %>
+      <li>
+          <%= "#{course.keys.class}" %>
+            <ul>
+              <li>
+                 <%= "#{sections.class}" %>
+                <ul>
+
+                  <li>
+
+                  </li>
+
+                </ul>
+              </li>
+            </ul>
+      </li>
+  <% end %>
+</ul>
