@@ -39,12 +39,17 @@ class User < ActiveRecord::Base
     course_events = {}
     courses = self.find_professor_courses
     courses.each do |course|
-      events = ProfessorEvent.where(:user_id => self.id, :course_id => course.id)
+      events = self.find_professor_events(course)
       course_events[course.id] = events
     end
     course_events
   end
 
+  def find_professor_events(course)
+    events = ProfessorEvent.where(:user_id => self.id,
+                                  :course_id => course.id)
+    events.collect! {|e| Event.find_by_id(e.event_id)}
+  end
 
   #every section under this category has the events for a particular course
 
@@ -52,7 +57,7 @@ class User < ActiveRecord::Base
     course_sections = ProfessorEvent.find_professor_sections(self)
     sections_events = {}
     course_sections.each do |course, sections|
-      events = ProfessorEvent.where(:user_id => self.id, :course_id => course.id)
+      events = self.find_professor_events(course)
       sections_events[sections] = events
     end
     sections_events
