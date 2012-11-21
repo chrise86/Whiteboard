@@ -4,6 +4,8 @@ SuperWhiteboard::Application.routes.draw do
 
   get "calendar/index"
 
+  get "calendar/get_section_events_pairs"
+
   get "gradebook/index"
 
   get "gradebook/add_category"
@@ -50,17 +52,17 @@ SuperWhiteboard::Application.routes.draw do
 
   get "dragon_drop/change_course"
 
-  get "event/add_question"
+  get "events/add_question"
 
-  get "event/remove_question"
+  get "events/remove_question"
 
-  get "event/add_new_download"
+  get "events/add_new_download"
 
-  get "event/remove_download"
+  get "events/remove_download"
 
-  get "event/grade_event"
+  get "events/grade_event"
 
-  get "event/show"
+  resource :events
 
   devise_for :users
 

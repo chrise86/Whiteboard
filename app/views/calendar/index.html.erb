@@ -1,3 +1,18 @@
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        get_section_events_pairs();
+    });
+
+    function get_section_events_pairs()
+    {
+        $.getJSON("<%= calendar_get_section_events_pairs_path %>", function(data)
+        {
+            alert(data);
+        });
+    }
+</script>
+
 <table>
     <% 5.times do |row| %>
       <tr style="height:100px;">

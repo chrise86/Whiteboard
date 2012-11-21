@@ -1,21 +1,25 @@
 class CalendarController < ApplicationController
 
+  respond_to :json
+
   def index
     @calendar_start_day = Date.today.beginning_of_month - (Date.today.beginning_of_month.wday)
-    @section_events = find_a_place_for_this_crap
   end
 
-  # Returns a hash formatted as: { section => [event, event, event, etc] }
-  def find_a_place_for_this_crap
+  # Returns a hash formatted as: { section => [events, events, events, etc] }
+  def get_section_events_pairs
     # Get a user
     @user = User.first
 
-    # Get all the sections for that user
-    sections = @user.find_all_sections
+    require "pry"; binding.pry
 
-    # Format the array of hashes as: { section => [event, event, event, etc] }
-    sections.map { |s| {s => s.find_all_events} }
-
+    # Send the json response
+    respond_with @user.find_all_sections_and_their_events.map { |s_and_es|
+      {
+          :section_id => s_and_es.key,
+          :event_id => s_and_es.value.map { |es| es.event_id }
+      }
+    }
   end
 
 end
