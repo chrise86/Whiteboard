@@ -1,18 +1,12 @@
-<h1>Calendar for <%= @user.first_name + " " + @user.last_name %></h1>
-
-<p>Here is the information:</p>
-
-<ul>
-  <% @sections_events_names.each do |section, events| %>
-      <li>
-        <%= "#{section.to_s}" %>
-          <ul>
-              <% events.each do |event| %>
-                  <li>
-                    <%= "#{event.to_s}" %>
-                  </li>
-              <% end %>
-          </ul>
-      </li>
-  <% end %>
-</ul>
+<table>
+    <% 5.times do |row| %>
+      <tr style="height:100px;">
+        <% 7.times do |column| %>
+            <td style="width:100px">
+              <%= @calendar_start_day.day %>
+            </td>
+            <% @calendar_start_day += 1.day %>
+        <% end %>
+      </tr>
+    <% end %>
+</table>

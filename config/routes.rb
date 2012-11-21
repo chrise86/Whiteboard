@@ -1,4 +1,7 @@
 SuperWhiteboard::Application.routes.draw do
+
+  root :to => 'calendar#index'
+
   get "calendar/index"
 
   get "gradebook/index"

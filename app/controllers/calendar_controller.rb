@@ -1,6 +1,12 @@
 class CalendarController < ApplicationController
 
   def index
+    @calendar_start_day = Date.today.beginning_of_month - (Date.today.beginning_of_month.wday)
+    find_a_place_for_this_crap
+  end
+
+  # Returns a hash formatted as: { section_id => [event_id, event_id, event_id, etc] }
+  def find_a_place_for_this_crap
     # Get a user
     @user = User.first
 
@@ -8,7 +14,6 @@ class CalendarController < ApplicationController
     sections = @user.find_all_sections
 
     # Get all the section names for those sections
-
     @section_names = {}
     @sections_events_names = {}
     sections.each do |s|
@@ -25,11 +30,11 @@ class CalendarController < ApplicationController
       event_names = []
       events = events_per_section[section.id]
       events.each do |e|
-        event_names << "#{e.title}"
+        event_names << "#{e.id}"
       end
-      @sections_events_names["#{name.to_s}-#{section.section_number.to_s}"] = event_names
+      @sections_events_names["#{section.id}"] = event_names
     end
 
-end
+  end
 
 end
