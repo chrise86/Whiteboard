@@ -8,7 +8,7 @@ class Section < ActiveRecord::Base
   belongs_to :course, :foreign_key => :course_id
 
   def find_all_events
-    events = SectionEvent.where(:section_id => self.id)
+    SectionEvent.where(:section_id => self.id).collect {|e| Event.find_by_id(e.event_id)}
   end
 
   def self.user_course_sections(user)
