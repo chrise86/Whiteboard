@@ -106,8 +106,8 @@ Section.all.each do |section|
     rand_time = rand(2.week.to_i)
     SectionEvent.create(section_id: section.id,
                         event_id: event.id,
-                        start: Time.now + rand_time,
-                        end: Time.now + (1.hour + 15.minute).to_i + rand_time)
+                        start_date: Time.now + rand_time,
+                        end_date: Time.now + (1.hour + 15.minute).to_i + rand_time)
   end
 end
 

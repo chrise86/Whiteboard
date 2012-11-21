@@ -13,27 +13,35 @@ class CalendarController < ApplicationController
     # Get all the sections for that user
     sections = @user.find_all_sections
 
-    # Get all the section names for those sections
-    @section_names = {}
-    @sections_events_names = {}
+    section_event_hash = []
     sections.each do |s|
-      @section_names[s] = Course.find_by_id(s.course_id).name
+      section_event_hash << { s => s.find_all_sections_for_month }
     end
 
-    # Get all the events (in an array) for every section
-    events_per_section = {}
-    sections.each do |s|
-      events_per_section[s.id] = Event.find_all_for_section(s.id)
-    end
-
-    @section_names.each do |section, name|
-      event_names = []
-      events = events_per_section[section.id]
-      events.each do |e|
-        event_names << "#{e.id}"
-      end
-      @sections_events_names["#{section.id}"] = event_names
-    end
+    require "pry"; binding.pry
+    #
+    #
+    ## Get all the section names for those sections
+    #@section_names = {}
+    #@sections_events_names = {}
+    #sections.each do |s|
+    #  @section_names[s] = Course.find_by_id(s.course_id).name
+    #end
+    #
+    ## Get all the events (in an array) for every section
+    #events_per_section = {}
+    #sections.each do |s|
+    #  events_per_section[s.id] = Event.find_all_for_section(s.id)
+    #end
+    #
+    #@section_names.each do |section, name|
+    #  event_names = []
+    #  events = events_per_section[section.id]
+    #  events.each do |e|
+    #    event_names << "#{e.id}"
+    #  end
+    #  @sections_events_names["#{section.id}"] = event_names
+    #end
 
   end
 
