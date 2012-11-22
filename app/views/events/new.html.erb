@@ -1,0 +1,20 @@
+<h1>creating a new event</h1>
+<p>Find me in app/views/event/show.html.erb</p>
+<p>Chris Phetvixay was here, just a test and to get me started :D</p>
+
+<%= form_for @event do |f| %>
+    <p>
+      <%= f.label :Assignment %><br>
+      <%= f.text_field :title %>
+    </p>
+
+    <p>
+      <%= f.label :Description %><br>
+      <%= f.text_area :description %>
+    </p>
+
+    <p>
+      <%= f.submit %>
+    </p>
+<% end %>
+

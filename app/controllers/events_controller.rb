@@ -1,5 +1,20 @@
-class EventController < ApplicationController
+class EventsController < ApplicationController
   #used to create a new event
+
+def create
+  @event = Event.new(params[:events])
+  if @event.save
+    render :text => "It saved! :D"
+  else
+    render :text => "It didn't save! :("
+  end
+end
+
+def new
+  @event = Event.new
+
+
+end
 
 def add_question
   #data is passed in in the form from ajax as params[:variable name]through ajax to the database
@@ -21,7 +36,7 @@ def remove_download
   #will be added later
 end
 
-def show(id=1)
+def show
   #shows an event
   @event = Event.find_by_id(id)
 end

@@ -57,8 +57,8 @@ SuperWhiteboard::Application.routes.draw do
 
   get "event/grade_event"
 
-  get "event/show"
-
+  #get "event/show"
+  resources :events
   devise_for :users
 
   # The priority is based upon order of creation:
