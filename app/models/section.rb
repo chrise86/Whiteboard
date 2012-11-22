@@ -16,6 +16,10 @@ class Section < ActiveRecord::Base
     #find_all_events.select { |s| self.end.month == Date.today.month }
   end
 
+  def name
+    Course.find_by_id(course_id).name
+  end
+
   def self.user_course_sections(user)
     #Get all of the sections for this professor, and show the data for the sections under that course.
     sections = user.find_all_sections

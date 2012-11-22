@@ -1,6 +1,9 @@
 <script type="text/javascript">
+    var course_classes;
+
     $(document).ready(function()
     {
+        course_classes = ["courseA", "courseB", "courseC", "courseD", "courseE"];
         get_section_events_pairs();
     });
 
@@ -8,10 +11,45 @@
     {
         $.getJSON("<%= calendar_get_section_events_pairs_path %>", function(data)
         {
-            alert(data);
+            for(var i=0; i < data.length; i++)
+            {
+                var temp_section = parseInt(Object.keys(data[i])[0]);
+                var temp_events = data[i][temp_section];
+
+                for(var j=0; j < temp_events.length; j++)
+                {
+                    $("body").append("<div id='" + temp_section + "' class='" + temp_events[j] + " " + course_classes[i] + "'>" + "EVENT NAME TO COME" + "</div>");
+                }
+            }
         });
     }
 </script>
+
+<style>
+  .courseA
+  {
+      background-color: #ff7f50;
+  }
+  .courseB
+  {
+      background-color: #5f9ea0;
+  }
+
+  .courseC
+  {
+      background-color: #adff2f;
+  }
+
+  .courseD
+  {
+      background-color: #afeeee;
+  }
+
+  .courseE
+  {
+      background-color: #ffd700;
+  }
+</style>
 
 <table>
     <% 5.times do |row| %>
