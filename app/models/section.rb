@@ -11,9 +11,12 @@ class Section < ActiveRecord::Base
     SectionEvent.where(:section_id => id).collect { |se| Event.find_by_id(se.event_id) }
   end
 
+  def find_all_events_id_and_title
+    find_all_events.collect { |e| { :id => e.id, :title => e.title } }
+  end
+
   def find_all_sections_for_month(month = Date.today.month)
     SectionEvent.where(:section_id => id).select { |se| end_date.month == Date.today.month }
-    #find_all_events.select { |s| self.end.month == Date.today.month }
   end
 
   def name

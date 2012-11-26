@@ -13,12 +13,12 @@
         {
             for(var i=0; i < data.length; i++)
             {
-                var temp_section = parseInt(Object.keys(data[i])[0]);
+                var temp_section = Object.keys(data[i])[0];
                 var temp_events = data[i][temp_section];
 
                 for(var j=0; j < temp_events.length; j++)
                 {
-                    $("body").append("<div id='" + temp_section + "' class='" + temp_events[j] + " " + course_classes[i] + "'>" + "EVENT NAME TO COME" + "</div>");
+                    $("body").append("<div id='" + temp_section + "' class='" + course_classes[i] + "' event_id='" + temp_events[j].id + "'>" + "EVENT NAME TO COME" + "</div>");
                 }
             }
         });
