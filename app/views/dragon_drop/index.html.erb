@@ -1,25 +1,18 @@
-<p>Here is the information:</p>
+<script type="text/javascript">
 
-<%= "#{@course_events.class}" %>
+    $(document).ready(function()
+    {
+      get_dragon_drop_data();
+    });
+    function get_content()
+    {
+        $.getJSON("<%=dragon_drop_get_content_path%>", function(data)
+        {
+           for(var i = 0; i < data.length; i++)
+           {
 
-<%= "#{@course_sections.class}" %>
+           }
+        });
+    }
 
-<ul>
-  <% @course_sections.each do |course, sections| %>
-      <li>
-          <%= "#{course.keys.class}" %>
-            <ul>
-              <li>
-                 <%= "#{sections.class}" %>
-                <ul>
-
-                  <li>
-
-                  </li>
-
-                </ul>
-              </li>
-            </ul>
-      </li>
-  <% end %>
-</ul>
+</script>
