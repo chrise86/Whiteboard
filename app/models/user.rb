@@ -37,8 +37,7 @@ class User < ActiveRecord::Base
   def find_all_sections_and_their_events_formatted
     # Get the array of sections for a user, then go through each section and create a hash where
     # the key is the section, and the value is an array of events for that particular section.
-
-    find_all_sections.collect { |s| { s => s.find_all_events_id_and_title } }
+    find_all_sections.collect { |s| { s.name => s.find_all_events_with_id_title_and_time } }
   end
 
 

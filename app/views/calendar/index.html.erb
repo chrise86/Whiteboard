@@ -18,7 +18,7 @@
 
                 for(var j=0; j < temp_events.length; j++)
                 {
-                    $("body").append("<div id='" + temp_section + "' class='" + course_classes[i] + "' event_id='" + temp_events[j].id + "'>" + "EVENT NAME TO COME" + "</div>");
+                    $("body").append("<div section_id='" + temp_events[j].section_id + "' class='" + course_classes[i] + "' event_id='" + temp_events[j].event_id + "' end_month='" + temp_events[j].end_month + "' end_day='" + temp_events[j].end_day + "' end_year='" + temp_events[j].end_year + "'>" + temp_events[j].title + "</div>");
                 }
             }
         });
