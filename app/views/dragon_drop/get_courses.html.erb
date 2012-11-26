@@ -8,8 +8,10 @@
     {
         $.getJSON("<%=dragon_drop_get_courses_path%>", function(data)
         {
-            var courses = data;
-
+            for(var i=0; i < temp_events.length; i++)
+            {
+                $("body").append("<div name='" + data[i] + "'>" + "</div>");
+            }
         });
     }
 

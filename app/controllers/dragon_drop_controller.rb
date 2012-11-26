@@ -1,4 +1,7 @@
 class DragonDropController < ApplicationController
+
+  respond_to :json, :html
+
   def add_event_to_section(section_id, event_id)
     SectionEvent.create(section_id: section_id, event_id: event_id)
   end

@@ -30,19 +30,14 @@ class User < ActiveRecord::Base
 
 
   def find_professor_courses
-    professor_events = ProfessorEvent.where(:user_id => id)
-    courses = []
-    professor_events.each do |prof_event|
-      courses << Course.find_by_id(prof_event.course_id)
-    end
-    courses
+    ProfessorEvent.where(:user_id => id).collect {|prof_event| Course.find_by_id(prof_event.course_id)}
   end
 
   def find_courses_events
     course_events = {}
-    courses = self.find_professor_courses
+    courses = find_professor_courses
     courses.each do |course|
-      events = self.find_professor_events(course)
+      events = find_professor_events(course)
       course_events[course.id] = events
     end
     course_events
@@ -63,7 +58,7 @@ class User < ActiveRecord::Base
     end
 
     #find all of the user sections under the professor's user ID
-    user_sections = user.find_all_sections
+    user_sections = find_all_sections
 
     #filter out the sections that the professor actually has
     #for every section in the list of sections extracted from professor courses,
