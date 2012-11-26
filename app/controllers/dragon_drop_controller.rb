@@ -32,7 +32,11 @@ class DragonDropController < ApplicationController
   def index
     user = User.first
     @course_events = user.find_professor_sections_events
-    @course_sections = @course_events.keys
+  end
+
+  def get_content
+    user = User.first
+    @courses = user.find_professor_courses
   end
 
 end
