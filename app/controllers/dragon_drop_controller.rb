@@ -1,4 +1,7 @@
 class DragonDropController < ApplicationController
+
+  respond_to :json, :html
+
   def add_event_to_section(section_id, event_id)
     SectionEvent.create(section_id: section_id, event_id: event_id)
   end
@@ -15,7 +18,7 @@ class DragonDropController < ApplicationController
     Category.where(:id => category_id).destroy
   end
 
-  def add_event(title, start_time, end_time, category_id, description, attachment)
+  def add_event(title, start_time=Time.now, end_time=Time.at_midnight, category_id, description, attachment)
     Event.create(:title => title, :start => start_time, :end => end_time,
                  :category_id => category_id, :description => description,
                  :attachment => attachment)
@@ -29,11 +32,30 @@ class DragonDropController < ApplicationController
 
   end
 
-  def show(user_id = User.first)
-    course_sections = Section.user_course_sections(user_id)
-    #Organize the data so that it can be gotten on the web page.
+  def index
+    user = User.first
+    respond_with @course_events = user.find_professor_sections_events
   end
 
+  def get_courses
+    user = User.first
+    respond_with @courses = user.find_professor_courses.collect {|course| {course: course.name}}
+  end
 
+  def get_sections
+    user = User.first
+    respond_with @sections = user.find_professor_sections.collect {|section| {section: section.id}}
+  end
+
+  def get_unassigned_events
+    user = User.first
+    respond_with @unassigned_events = user.find_courses_events.collect {|event| {event: event.title}}
+  end
+
+  def get_assigned_events
+    user = User.first
+    respond_with @assigned_events = user.find_all_sections_and_their_events.collect {|section, events|
+    events.each {|event| {section_id: section.id, event_id: event.id}}}
+  end
 
 end

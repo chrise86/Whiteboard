@@ -1,18 +1,65 @@
-<h1>Calendar for <%= @user.first_name + " " + @user.last_name %></h1>
+<script type="text/javascript">
+    var course_classes;
 
-<p>Here is the information:</p>
+    $(document).ready(function()
+    {
+        course_classes = ["courseA", "courseB", "courseC", "courseD", "courseE"];
+        get_section_events_pairs();
+    });
 
-<ul>
-    <% @section.each do |s|  %>
-      <% @section_names.each_with_index do |n, index| %>
-        <li>
-          <%= n %>
-          <ul>
-            <% @events_per_section[index].each do |e|  %>
-                <li><%= e.title %></li>
-            <% end %>
-          </ul>
-        </li>
-      <% end %>
+    function get_section_events_pairs()
+    {
+        $.getJSON("<%= calendar_get_section_events_pairs_path %>", function(data)
+        {
+            for(var i=0; i < data.length; i++)
+            {
+                var temp_section = Object.keys(data[i])[0];
+                var temp_events = data[i][temp_section];
+
+                for(var j=0; j < temp_events.length; j++)
+                {
+                    $("body").append("<div id='" + temp_section + "' class='" + course_classes[i] + "' event_id='" + temp_events[j].id + "'>" + "EVENT NAME TO COME" + "</div>");
+                }
+            }
+        });
+    }
+</script>
+
+<style>
+  .courseA
+  {
+      background-color: #ff7f50;
+  }
+  .courseB
+  {
+      background-color: #5f9ea0;
+  }
+
+  .courseC
+  {
+      background-color: #adff2f;
+  }
+
+  .courseD
+  {
+      background-color: #afeeee;
+  }
+
+  .courseE
+  {
+      background-color: #ffd700;
+  }
+</style>
+
+<table>
+    <% 5.times do |row| %>
+      <tr style="height:100px;">
+        <% 7.times do |column| %>
+            <td style="width:100px">
+              <%= @calendar_start_day.day %>
+            </td>
+            <% @calendar_start_day += 1.day %>
+        <% end %>
+      </tr>
     <% end %>
-</ul>
+</table>

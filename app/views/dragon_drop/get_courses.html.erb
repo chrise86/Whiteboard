@@ -1,0 +1,18 @@
+<script type="text/javascript">
+
+    $(document).ready(function()
+    {
+        get_courses();
+    });
+    function get_courses()
+    {
+        $.getJSON("<%=dragon_drop_get_courses_path%>", function(data)
+        {
+            for(var i=0; i < temp_events.length; i++)
+            {
+                $("body").append("<div name='" + data[i] + "'>" + "</div>");
+            }
+        });
+    }
+
+</script>

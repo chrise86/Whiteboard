@@ -1,0 +1,18 @@
+<script type="text/javascript">
+
+    $(document).ready(function()
+    {
+        get_sections();
+    });
+    function get_sections()
+    {
+        $.getJSON("<%=dragon_drop_get_sections_path%>", function(data)
+        {
+            for(var i = 0; i < data.length; i++)
+            {
+
+            }
+        });
+    }
+
+</script>

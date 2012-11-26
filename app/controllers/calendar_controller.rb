@@ -1,30 +1,16 @@
 class CalendarController < ApplicationController
 
+  respond_to :json
+
   def index
+    @calendar_start_day = Date.today.beginning_of_month - (Date.today.beginning_of_month.wday)
+  end
+
+  # Returns a hash formatted as: { section => [events, events, events, etc] }
+  def get_section_events_pairs
     # Get a user
     @user = User.first
-
-    # Get all the sections for that user
-    @section = Section.all_for_user(@user)
-
-    # Get all the section names for those sections
-
-    @section_names = []
-    @section.each do |s|
-      @section_names << Course.find_by_id(s.course_id).name
-    end
-
-
-    # Get all the events (in an array) for every section
-    @events_per_section = {}
-    @section.each do |s|
-      @events_per_section[s.name] = SectionEvent.where(:section_id => s.id)
-    end
-
-
-
-    #require 'pry'; binding.pry
-
+    respond_with @user.find_all_sections_and_their_events.collect { |s_and_es| { id: s_and_es.id, name: s_and_es } }
   end
 
 end

@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  attr_accessible :attachment, :category_id, :description, :end, :start, :title
+  attr_accessible :attachment, :category_id, :description, :title
   has_many :gradebooks
   has_many :professor_events
   has_many :questions
@@ -7,7 +7,7 @@ class Event < ActiveRecord::Base
   has_many :section_events
   has_many :sections, :through => :section_events
 
-  def self.all_for_section(section_id)
+  def self.find_all_for_section(section_id)
     section_events = SectionEvent.where(:section_id => section_id)
 
     events = []
@@ -18,9 +18,8 @@ class Event < ActiveRecord::Base
     events
   end
 
-  def self.grade_weight(section_id)
-    category_id = Section.category_id
-    category = Category.find_by_id(category_id)
+  def self.grade_weight
+    category = Category.find_by_id(self.category_id)
     category.weight
   end
 
