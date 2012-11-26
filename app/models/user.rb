@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
     find_all_sections.collect { |s| {s => s.find_all_events} }
   end
 
+
   def find_professor_courses
     professor_events = ProfessorEvent.where(:user_id => id)
     courses = []
