@@ -10,9 +10,7 @@ class CalendarController < ApplicationController
   def get_section_events_pairs
     # Get a user
     @user = User.first
-    x = @user.find_all_sections_and_their_events_formatted
-
-    respond_with x
+    respond_with @user.find_all_sections_and_their_events.collect { |s_and_es| { id: s_and_es.id, name: s_and_es } }
   end
 
 end

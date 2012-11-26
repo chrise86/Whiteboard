@@ -1,4 +1,7 @@
 class DragonDropController < ApplicationController
+
+  respond_to :json, :html
+
   def add_event_to_section(section_id, event_id)
     SectionEvent.create(section_id: section_id, event_id: event_id)
   end
@@ -31,12 +34,27 @@ class DragonDropController < ApplicationController
 
   def index
     user = User.first
-    @course_events = user.find_professor_sections_events
+    respond_with @course_events = user.find_professor_sections_events
   end
 
-  def get_content
+  def get_courses
     user = User.first
-    @courses = user.find_professor_courses
+    respond_with @courses = user.find_professor_courses
+  end
+
+  def get_sections
+    user = User.first
+    respond_with @sections = user.find_professor_sections
+  end
+
+  def get_unassigned_events
+    user = User.first
+    respond_with @unassigned_events = user.find_courses_events
+  end
+
+  def get_assigned_events
+    user = User.first
+    respond_with @assigned_events = user.find_all_sections
   end
 
 end
