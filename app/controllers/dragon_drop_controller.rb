@@ -39,7 +39,7 @@ class DragonDropController < ApplicationController
 
   def get_courses
     user = User.first
-    respond_with @courses = user.find_professor_courses.collect {|course| {course: course.name}}
+    respond_with @courses = user.find_professor_courses
   end
 
   def get_sections
