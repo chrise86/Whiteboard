@@ -56,8 +56,6 @@ SuperWhiteboard::Application.routes.draw do
 
   get "dragon_drop/get_sections"
 
-  get "dragon_drop/get_courses"
-
   get "dragon_drop/get_unassigned_events"
 
   get "dragon_drop/get_assigned_events"
