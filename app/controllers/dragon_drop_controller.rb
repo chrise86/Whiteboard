@@ -37,6 +37,7 @@ class DragonDropController < ApplicationController
     @courses = user.find_professor_courses
 
     get_sections
+    #get_unassigned_events
   end
 
   def get_sections
@@ -44,7 +45,6 @@ class DragonDropController < ApplicationController
     @assigned_events = user.find_sections_events
     @sections = user.find_all_sections
     @weekly_events = []
-
   end
 
   def get_unassigned_events
