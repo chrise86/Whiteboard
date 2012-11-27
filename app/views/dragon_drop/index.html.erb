@@ -18,3 +18,29 @@
 </script>
 
 <%= collection_select(:course, :id, @courses, :id, :name) %>
+
+<table>
+  <tr style="height:100px">
+    <td style="width:100px"></td>
+
+    <% %w(Sunday Monday Tuesday Wednesday Thursday Friday Saturday).each do |day| %>
+        <td style="width:100px">
+          <%= day %>
+        </td>
+    <% end %>
+  </tr>
+  <% @sections.each do |section| %>
+      <tr style="height:100px">
+        <td style="width:100px">
+          <%= section.long_name %>
+        </td>
+        <% 7.times do |day| %>
+            <td style="width:100px">
+              <%= section.find_events_on_day(day).collect {|event| event[:event_title]} %>
+            </td>
+        <% end %>
+      </tr>
+  <% end %>
+</table>
+
+<button onclick="window.open('/events/new','Event Creator',' width=800,height=600')">Create New Event</button>

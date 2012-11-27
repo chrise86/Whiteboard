@@ -24,11 +24,14 @@ end
 def show
   params[:event_id] ||= 1
   params[:section_id] ||= 1
+
   #shows an events
   @event = Event.find_by_id(params[:event_id])
   @section_event = SectionEvent.where(:section_id => params[:section_id], :event_id => params[:event_id]).first
   @professor_event = ProfessorEvent.where(:event_id => params[:event_id]).first
   @professor = User.find_by_id(@professor_event.user_id)
+
+
 end
 
 end

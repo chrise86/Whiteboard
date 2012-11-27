@@ -35,6 +35,8 @@ class DragonDropController < ApplicationController
   def index
     user = User.first
     @courses = user.find_professor_courses
+
+    get_sections
   end
 
   def get_sections

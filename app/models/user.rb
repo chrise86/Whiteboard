@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
 
 
   def find_professor_courses
-    ProfessorEvent.where(:user_id => id).collect {|prof_event| Course.find_by_id(prof_event.course_id)}
+    ProfessorEvent.where(:user_id => id).collect {|prof_event| Course.find_by_id(prof_event.course_id)}.uniq
   end
 
   def find_courses_events
