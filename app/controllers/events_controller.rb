@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   #used to create a new event
 
 def create
-  @event = Event.new(params[:events])
+  #require "pry"; binding.pry
+  @event = Event.new(params[:event])
   if @event.save
     render :text => "It saved! :D"
   else
