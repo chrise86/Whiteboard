@@ -34,22 +34,20 @@ class DragonDropController < ApplicationController
 
   def index
     user = User.first
-    respond_with @course_events = user.find_professor_sections_events
-  end
-
-  def get_courses
-    user = User.first
-    respond_with @courses = user.find_professor_courses
+    @courses = user.find_professor_courses
   end
 
   def get_sections
     user = User.first
-    respond_with @sections = user.find_professor_sections.collect {|section| {section: section.id}}
+    @assigned_events = user.find_sections_events
+    @sections = user.find_all_sections
+    @weekly_events = []
+
   end
 
   def get_unassigned_events
     user = User.first
-    respond_with @unassigned_events = user.find_courses_events.collect {|event| {event: event.title}}
+    @unassigned_events = user.find_courses_events
   end
 
   def get_assigned_events

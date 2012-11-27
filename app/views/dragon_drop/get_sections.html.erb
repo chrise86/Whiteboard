@@ -1,18 +1,25 @@
-<script type="text/javascript">
+<table>
+  <tr style="height:100px">
+    <td style="width:100px"></td>
 
-    $(document).ready(function()
-    {
-        get_sections();
-    });
-    function get_sections()
-    {
-        $.getJSON("<%=dragon_drop_get_sections_path%>", function(data)
-        {
-            for(var i = 0; i < data.length; i++)
-            {
+  <% %w(Sunday Monday Tuesday Wednesday Thursday Friday Saturday).each do |day| %>
+    <td style="width:100px">
+      <%= day %>
+    </td>
+  <% end %>
+  </tr>
+  <% @sections.each do |section| %>
+      <tr style="height:100px">
+        <td style="width:100px">
+          <%= section.long_name %>
+        </td>
+        <% 7.times do |day| %>
+           <td style="width:100px">
+             <%= section.find_events_on_day(day).collect {|event| event[:event_title]} %>
+           </td>
+        <% end %>
+      </tr>
+  <% end %>
+</table>
 
-            }
-        });
-    }
-
-</script>
+<button onclick="window.open('/events/new','Event Creator',' width=800,height=600')">Create New Event</button>

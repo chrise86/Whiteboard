@@ -18,25 +18,56 @@ class User < ActiveRecord::Base
   # Returns an array of all the sections a user belongs to
   def find_all_sections
     # Get an array of UserSections for the user, then go through each of those UserSections, and pull out the section
-   UserSection.where(:user_id => id).collect { |us| Section.find_by_id(us.section_id) }
+    UserSection.where(:user_id => id).collect { |us| Section.find_by_id(us.section_id) }
   end
 
-  # Returns an array formatted as: [ section => [events, events, events, etc], etc ]
+  def find_sections_events
+    sections = find_all_sections
+    sections_events = {}
+    sections.each do |section|
+      events = section.find_all_events_with_id_title_and_time
+      sections_events[section] = events
+    end
+    sections_events
+  end
+
+  # Returns an array of all the sections a user belongs to
+  def find_all_sections_formatted
+    # Get an array of UserSections for the user, then go through each of those UserSections, and pull out the section
+    find_all_sections.collect { |s| { :id => s.id, :name => s.name } }
+  end
+
+  # Returns a hash of each section to the events assigned to that section,
+  # in the format {section => [event, event, ... , event]}
   def find_all_sections_and_their_events
     # Get the array of sections for a user, then go through each section and create a hash where
     # the key is the section, and the value is an array of events for that particular section.
-    find_all_sections.collect { |s| {s => s.find_all_events} }
+    sections_events = {}
+    find_all_sections.each do |section|
+      sections_events[section] = section.find_all_events
+    end
   end
 
-  #has to be unique courses!
+  # Returns sections and events in the following format:
+  #[{:course_name=>"ITEC3101",
+  #  :section_id=>58,
+  #  :event_id=>37,
+  #  :event_title=>"Event 37",
+  #  :end_date=>Sat, 01 Dec 2012 01:51:46 UTC +00:00},
+  #    {:course_name=>"ITEC3101",
+  #     :section_id=>58,
+  #     :event_id=>40,
+  #     :event_title=>"Event 40",
+  #     :end_date=>Thu, 29 Nov 2012 18:03:38 UTC +00:00}, etc]
+  def find_all_sections_and_their_events_formatted
+    # Get the array of sections for a user, then go through each section and create a hash where
+    # the key is the section, and the value is an array of events for that particular section.
+    find_all_sections.collect { |s| s.find_all_events_with_id_title_and_time }.flatten
+  end
+
+
   def find_professor_courses
-    prof_courses = ProfessorEvent.where(:user_id => id)
-    courses = []
-    prof_courses.each do |prof_course|
-      course = Course.find_by_id(prof_course.course_id)
-      courses << course unless courses.include? course
-    end
-    courses
+    ProfessorEvent.where(:user_id => id).collect {|prof_event| Course.find_by_id(prof_event.course_id)}.uniq
   end
 
   def find_courses_events
@@ -44,7 +75,7 @@ class User < ActiveRecord::Base
     courses = find_professor_courses
     courses.each do |course|
       events = find_professor_events(course)
-      course_events[course.id] = events
+      course_events[course] = events
     end
     course_events
   end
@@ -86,10 +117,10 @@ class User < ActiveRecord::Base
   #every section under this category has the events for a particular course
 
   def find_professor_sections_events
-    course_sections = find_professor_sections
+    course_sections = ProfessorEvent.find_professor_sections(self)
     sections_events = {}
     course_sections.keys.each do |course|
-      events = find_professor_events(course)
+      events = self.find_professor_events(course)
       sections_events[course_sections] = events
     end
     sections_events

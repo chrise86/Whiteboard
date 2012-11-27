@@ -58,7 +58,7 @@ SuperWhiteboard::Application.routes.draw do
 
   get "dragon_drop/get_courses"
 
-  match "dragon_drop/get_unassigned_events/:id" => "dragon_drop#get_unassigned_events", :via => :get
+  get "dragon_drop/get_unassigned_events"
 
   get "dragon_drop/get_assigned_events"
 

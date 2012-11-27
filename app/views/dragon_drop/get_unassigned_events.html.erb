@@ -1,24 +1,12 @@
-<script type="text/javascript">
-
-    $(document).ready(function()
-    {
-        get_dragon_drop_data();
-    });
-    function get_unassigned_events()
-    {
-        $.getJSON("<%=dragon_drop_get_unassigned_events_path%>", function(data)
-        {
-            for(var i = 0; i < data.length; i++)
-            {
-                var temp_section = parseInt(Object.keys(data[i])[0]);
-                var temp_events = data[i][temp_section];
-
-                for(var j=0; j < temp_events.length; j++)
-                {
-                    $("body").append("<div id='" + temp_section + "' class='" + temp_events[j] + " " + course_classes[i] + "'>" + "</div>");
-                }
-            }
-        });
-    }
-
-</script>
+<table>
+  <% @unassigned_events.each do |course, events| %>
+  <tr style="height:100px">
+    <td><%= course.name %></td>
+    <% events.each do |event| %>
+    <td style="width:100px">
+      <%= event.title %>
+    </td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
