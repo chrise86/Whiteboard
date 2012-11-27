@@ -14,12 +14,11 @@ class Section < ActiveRecord::Base
   def find_all_events_with_id_title_and_time
     find_all_events.collect { |e|
       {
+          :course_name => name,
           :section_id => id,
           :event_id => e.id,
-          :title => e.title,
-          :end_month => SectionEvent.where(:section_id => id, :event_id => e.id).first.end_date.month,
-          :end_day => SectionEvent.where(:section_id => id, :event_id => e.id).first.end_date.day,
-          :end_year => SectionEvent.where(:section_id => id, :event_id => e.id).first.end_date.year
+          :event_title => e.title,
+          :end_date => SectionEvent.where(:section_id => id, :event_id => e.id).first.end_date
       }
     }
   end

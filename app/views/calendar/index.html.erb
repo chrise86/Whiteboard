@@ -1,28 +1,28 @@
 <script type="text/javascript">
-    var course_classes;
-
-    $(document).ready(function()
-    {
-        course_classes = ["courseA", "courseB", "courseC", "courseD", "courseE"];
-        get_section_events_pairs();
-    });
-
-    function get_section_events_pairs()
-    {
-        $.getJSON("<%= calendar_get_section_events_pairs_path %>", function(data)
-        {
-            for(var i=0; i < data.length; i++)
-            {
-                var temp_section = Object.keys(data[i])[0];
-                var temp_events = data[i][temp_section];
-
-                for(var j=0; j < temp_events.length; j++)
-                {
-                    $("body").append("<div section_id='" + temp_events[j].section_id + "' class='" + course_classes[i] + "' event_id='" + temp_events[j].event_id + "' end_month='" + temp_events[j].end_month + "' end_day='" + temp_events[j].end_day + "' end_year='" + temp_events[j].end_year + "'>" + temp_events[j].title + "</div>");
-                }
-            }
-        });
-    }
+//    var course_classes;
+//
+//    $(document).ready(function()
+//    {
+//        course_classes = ["courseA", "courseB", "courseC", "courseD", "courseE"];
+//        get_section_events_pairs();
+//    });
+//
+//    function get_section_events_pairs()
+//    {
+//        $.getJSON("<%= calendar_get_section_events_pairs_path %>", function(data)
+//        {
+//            for(var i=0; i < data.length; i++)
+//            {
+//                var temp_section = Object.keys(data[i])[0];
+//                var temp_events = data[i][temp_section];
+//
+//                for(var j=0; j < temp_events.length; j++)
+//                {
+//                    $("body").append("<div section_id='" + temp_events[j].section_id + "' class='" + course_classes[i] + "' event_id='" + temp_events[j].event_id + "' end_month='" + temp_events[j].end_month + "' end_day='" + temp_events[j].end_day + "' end_year='" + temp_events[j].end_year + "'>" + temp_events[j].title + "</div>");
+//                }
+//            }
+//        });
+//    }
 </script>
 
 <style>
@@ -55,8 +55,9 @@
     <% 5.times do |row| %>
       <tr style="height:100px;">
         <% 7.times do |column| %>
-            <td style="width:100px">
+            <td style="width:100px" id="">
               <%= @calendar_start_day.day %>
+
             </td>
             <% @calendar_start_day += 1.day %>
         <% end %>

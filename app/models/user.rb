@@ -34,10 +34,21 @@ class User < ActiveRecord::Base
     find_all_sections.collect { |s| {s => s.find_all_events} }
   end
 
+  # Returns sections and events in the following format:
+  #[{:course_name=>"ITEC3101",
+  #  :section_id=>58,
+  #  :event_id=>37,
+  #  :event_title=>"Event 37",
+  #  :end_date=>Sat, 01 Dec 2012 01:51:46 UTC +00:00},
+  #    {:course_name=>"ITEC3101",
+  #     :section_id=>58,
+  #     :event_id=>40,
+  #     :event_title=>"Event 40",
+  #     :end_date=>Thu, 29 Nov 2012 18:03:38 UTC +00:00}, etc]
   def find_all_sections_and_their_events_formatted
     # Get the array of sections for a user, then go through each section and create a hash where
     # the key is the section, and the value is an array of events for that particular section.
-    find_all_sections.collect { |s| { s.name => s.find_all_events_with_id_title_and_time } }
+    find_all_sections.collect { |s| s.find_all_events_with_id_title_and_time }.flatten
   end
 
 
