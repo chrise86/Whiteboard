@@ -18,8 +18,9 @@ class Event < ActiveRecord::Base
     events
   end
 
-  def self.grade_weight
-    category = Category.find_by_id(self.category_id)
+  def self.grade_weight(section_id)
+    category_id = Section.category_id
+    category = Category.find_by_id(category_id)
     category.weight
   end
 

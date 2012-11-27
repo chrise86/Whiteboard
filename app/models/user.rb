@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   # Returns an array of all the sections a user belongs to
   def find_all_sections
     # Get an array of UserSections for the user, then go through each of those UserSections, and pull out the section
-    UserSection.where(:user_id => id).collect { |us| Section.find_by_id(us.section_id) }
+   UserSection.where(:user_id => id).collect { |us| Section.find_by_id(us.section_id) }
   end
 
   def find_sections_events
@@ -30,22 +30,18 @@ class User < ActiveRecord::Base
     end
     sections_events
   end
-
+  
   # Returns an array of all the sections a user belongs to
   def find_all_sections_formatted
     # Get an array of UserSections for the user, then go through each of those UserSections, and pull out the section
     find_all_sections.collect { |s| { :id => s.id, :name => s.name } }
   end
 
-  # Returns a hash of each section to the events assigned to that section,
-  # in the format {section => [event, event, ... , event]}
+  # Returns an array formatted as: [ section => [events, events, events, etc], etc ]
   def find_all_sections_and_their_events
     # Get the array of sections for a user, then go through each section and create a hash where
     # the key is the section, and the value is an array of events for that particular section.
-    sections_events = {}
-    find_all_sections.each do |section|
-      sections_events[section] = section.find_all_events
-    end
+    find_all_sections.collect { |s| {s => s.find_all_events} }
   end
 
   # Returns sections and events in the following format:
@@ -67,7 +63,7 @@ class User < ActiveRecord::Base
 
 
   def find_professor_courses
-    ProfessorEvent.where(:user_id => id).collect {|prof_event| Course.find_by_id(prof_event.course_id)}.uniq
+    ProfessorEvent.where(:user_id => id).collect {|prof_event| Course.find_by_id(prof_event.course_id)}
   end
 
   def find_courses_events
@@ -75,7 +71,7 @@ class User < ActiveRecord::Base
     courses = find_professor_courses
     courses.each do |course|
       events = find_professor_events(course)
-      course_events[course] = events
+      course_events[course.id] = events
     end
     course_events
   end
