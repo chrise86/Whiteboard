@@ -4,6 +4,8 @@ class CalendarController < ApplicationController
 
   def index
     params[:date] ||= Date.today
+
+    # Calculate the first day that appears on the calendar
     @calendar_start_day = params[:date].beginning_of_month - (Date.today.beginning_of_month.wday)
 
     # Get all sections and events
@@ -12,7 +14,10 @@ class CalendarController < ApplicationController
     # Filter to the current month only
     @sections_and_events.select! { |i| i[:end_date] > @calendar_start_day and i[:end_date] < (@calendar_start_day + 35.days) }
 
-    require "pry"; binding.pry
+    # Sort by date
+    @sections_and_events.sort { |a, b| a[:end_date] <=> b[:end_date] }
+
+
   end
 
   # Returns a hash formatted as: { section => [events, events, events, etc] }

@@ -49,15 +49,25 @@
   {
       background-color: #ffd700;
   }
+
+  table td
+  {
+      vertical-align:text-top;
+      background: #f5f5dc;
+  }
 </style>
 
-<table>
+<h1 style="text-align: center;">Whiteboard ... or something</h1>
+
+<table style="margin-left: auto; margin-right: auto;">
     <% 5.times do |row| %>
       <tr style="height:100px;">
         <% 7.times do |column| %>
-            <td style="width:100px" id="">
+            <td style="width:150px" id="">
               <%= @calendar_start_day.day %>
-
+              <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day }.each do |se| %>
+              <div class="<%= se[:course_name] %>"><%= link_to se[:event_title], :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] %></div>
+              <% end %>
             </td>
             <% @calendar_start_day += 1.day %>
         <% end %>
