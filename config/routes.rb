@@ -70,7 +70,9 @@ SuperWhiteboard::Application.routes.draw do
 
   get "events/grade_event"
 
-  resource :events
+  get "events/show", :as => :json
+
+  resource :events, :except => [:show]
 
   devise_for :users
 

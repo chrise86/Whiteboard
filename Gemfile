@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'devise'
 gem 'composite_primary_keys'
 gem 'pry'
+gem 'pry-nav'
 
 
 # Gems used only for assets and not required
