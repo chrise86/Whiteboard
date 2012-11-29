@@ -1,10 +1,10 @@
 class CalendarController < ApplicationController
 
   def index
-    params[:date] ||= Date.today
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
 
     # Calculate the first day that appears on the calendar
-    @calendar_start_day = params[:date].beginning_of_month - (Date.today.beginning_of_month.wday)
+    @calendar_start_day = @date.beginning_of_month - (@date.beginning_of_month.wday)
 
     # Get all sections and events
     @sections_and_events = User.first.find_all_sections_and_their_events_formatted
@@ -16,7 +16,7 @@ class CalendarController < ApplicationController
     @sections_and_events.sort { |a, b| a[:end_date] <=> b[:end_date] }
 
     # Month string
-    @month = params[:date].strftime("%B %Y")
+    @month = @date.strftime("%B %Y")
 
     # Event div colors
     div_colors = %w(#ff7f50 #5f9ea0 #adff2f #afeeee #ffd700)

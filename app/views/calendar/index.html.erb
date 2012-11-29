@@ -57,6 +57,9 @@
 
 <h3 style="text-align: center;"><%= @month %></h3>
 
+<%= link_to "Previous Month", :controller => "calendar", :action => "index", :date => ""+ @date.year.to_s + "-" + (@date.month-1).to_s + "-1" %>
+ | <%= link_to "Next Month", :controller => "calendar", :action => "index", :date => ""+ @date.year.to_s + "-" + (@date.month+1).to_s + "-1" %>
+
 <table style="margin-left: auto; margin-right: auto;">
     <% 5.times do |row| %>
       <tr style="height:100px;">
