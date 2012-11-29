@@ -32,11 +32,14 @@
   <% @sections.each do |section| %>
       <tr style="height:100px">
         <td style="width:100px">
-          <%= section.long_name %>
+          <%= section[:section_name] %>
         </td>
         <% 7.times do |day| %>
             <td style="width:100px">
-              <%= section.find_events_on_day(day).collect {|event| event[:event_title]} %>
+              <% @assigned_events.select { |event|
+                event[:end_date].wday==day and event[:section_id]==section[:section_id]}.each do |event| %>
+                <div class="<%= event[:event_id] %>"><%= event[:event_title] %></div>
+              <% end %>
             </td>
         <% end %>
       </tr>

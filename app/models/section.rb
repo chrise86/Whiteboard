@@ -31,59 +31,6 @@ class Section < ActiveRecord::Base
     Course.find_by_id(course_id).name
   end
 
-  def find_events_on_day(day = 0)
-    events = find_all_events_with_id_title_and_time
-    if day == 0
-      sunday_events = []
-      events.each do |event|
-        sunday_events << event if event.values[4].sunday?
-      end
-      return sunday_events
-    end
-    if day == 1
-      monday_events = []
-      events.each do |event|
-        monday_events << event if event.values[4].monday?
-      end
-      return monday_events
-    end
-    if day == 2
-      tuesday_events = []
-      events.each do |event|
-        tuesday_events << event if event.values[4].tuesday?
-      end
-      return tuesday_events
-    end
-    if day == 3
-      wednesday_events = []
-      events.each do |event|
-        wednesday_events << event if event.values[4].wednesday?
-      end
-      return wednesday_events
-    end
-    if day == 4
-      thursday_events = []
-      events.each do |event|
-        thursday_events << event if event.values[4].thursday?
-      end
-      return thursday_events
-    end
-    if day == 5
-      friday_events = []
-      events.each do |event|
-        friday_events << event if event.values[4].friday?
-      end
-      return friday_events
-    end
-    if day == 6
-      saturday_events = []
-      events.each do |event|
-        saturday_events << event if event.values[4].saturday?
-      end
-      return saturday_events
-    end
-  end
-
   def long_name
     "#{name} - #{section_number}"
   end
