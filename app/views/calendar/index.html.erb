@@ -61,12 +61,18 @@
  | <%= link_to "Next Month", :controller => "calendar", :action => "index", :date => ""+ @date.year.to_s + "-" + (@date.month+1).to_s + "-1" %>
 
 <table style="margin-left: auto; margin-right: auto;">
+    <tr>
+        <% Date::DAYNAMES.each do |day| %>
+            <td><%= day %></td>
+        <% end %>
+    </tr>
+
     <% 5.times do |row| %>
       <tr style="height:100px;">
         <% 7.times do |column| %>
             <td style="width:150px" id="">
               <%= @calendar_start_day.day %>
-              <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day }.each do |se| %>
+              <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day and se[:end_date].month == @calendar_start_day.month }.each do |se| %>
                 <div class="<%= se[:course_name] %> event"><%= link_to se[:event_title], :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] %></div>
               <% end %>
             </td>
