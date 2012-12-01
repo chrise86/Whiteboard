@@ -1,54 +1,50 @@
-<script type="text/javascript">
-//    var course_classes;
-//
-//    $(document).ready(function()
-//    {
-//        course_classes = ["courseA", "courseB", "courseC", "courseD", "courseE"];
-//        get_section_events_pairs();
-//    });
-//
-//    function get_section_events_pairs()
-//    {
-//        $.getJSON("<%= calendar_get_section_events_pairs_path %>", function(data)
-//        {
-//            for(var i=0; i < data.length; i++)
-//            {
-//                var temp_section = Object.keys(data[i])[0];
-//                var temp_events = data[i][temp_section];
-//
-//                for(var j=0; j < temp_events.length; j++)
-//                {
-//                    $("body").append("<div section_id='" + temp_events[j].section_id + "' class='" + course_classes[i] + "' event_id='" + temp_events[j].event_id + "' end_month='" + temp_events[j].end_month + "' end_day='" + temp_events[j].end_day + "' end_year='" + temp_events[j].end_year + "'>" + temp_events[j].title + "</div>");
-//                }
-//            }
-//        });
-//    }
+<script>
+    $(function() {
+        $( "#modal" ).dialog({ autoOpen: false, draggable: false, modal: true });
+
+        $(".event").on("click", function(event) {
+            // Stop the click from loading a new page
+            event.preventDefault();
+
+            // Get the URL of the clicked on div
+            var eventURL = event.currentTarget.firstChild.attributes['href'].value;
+
+            // Load the URL content for the event dynamically in the modal
+            $.getJSON(eventURL, function(data) {
+                var modal = $($.find("#modal")[0]);
+
+                // Clear current contents of div
+                modal.empty();
+
+                // Add the attributes to the div:
+                modal.dialog('option', 'title', data["title"]);
+                modal.append("<p>Professor: " + data["professor"] + "</p>");
+                modal.append("<p>Description: " + data["description"] + "</p>");
+                modal.append("<p>Due date: " + data["due_date"] + "</p>");
+
+                // Finally, open the modal
+                $("#modal").dialog("open");
+            }).error(function() {
+                        var modal = $($.find("#modal")[0]);
+
+                        // Clear current contents of div
+                        modal.empty();
+
+                        // Add the attributes to the div:
+                        modal.append("Error: Failed to load event.");
+                    });
+
+        });
+    });
 </script>
 
 <style>
-  .courseA
-  {
-      background-color: #ff7f50;
-  }
-  .courseB
-  {
-      background-color: #5f9ea0;
-  }
-
-  .courseC
-  {
-      background-color: #adff2f;
-  }
-
-  .courseD
-  {
-      background-color: #afeeee;
-  }
-
-  .courseE
-  {
-      background-color: #ffd700;
-  }
+    <% @course_styles.each do |k| %>
+    .<%= k.first %>
+    {
+        background-color: <%= k.last %>;
+    }
+    <% end %>
 
   table td
   {
@@ -59,16 +55,25 @@
 
 <h1 style="text-align: center;">Whiteboard ... or something</h1>
 
+<h3 style="text-align: center;"><%= @month %></h3>
+
+<%= link_to "Previous Month", :controller => "calendar", :action => "index", :date => ""+ @date.year.to_s + "-" + (@date.month-1).to_s + "-1" %>
+ | <%= link_to "Next Month", :controller => "calendar", :action => "index", :date => ""+ @date.year.to_s + "-" + (@date.month+1).to_s + "-1" %>
+
 <table style="margin-left: auto; margin-right: auto;">
+    <tr>
+        <% Date::DAYNAMES.each do |day| %>
+            <td><%= day %></td>
+        <% end %>
+    </tr>
+
     <% 5.times do |row| %>
       <tr style="height:100px;">
         <% 7.times do |column| %>
             <td style="width:150px" id="">
               <%= @calendar_start_day.day %>
-              <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day }.each do |se| %>
-              <div class="<%= se[:course_name] %>">
-                <%= link_to se[:event_title], :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] %>
-              </div>
+              <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day and se[:end_date].month == @calendar_start_day.month }.each do |se| %>
+                <div class="<%= se[:course_name] %> event"><%= link_to se[:event_title], :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] %></div>
               <% end %>
             </td>
             <% @calendar_start_day += 1.day %>
@@ -78,3 +83,5 @@
 </table>
 
 <p><%= link_to "Dragon Drop", :controller => "dragon_drop", :action => "index" %></p>
+
+<div id="modal">No events loaded.</div>
