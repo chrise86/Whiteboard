@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
     courses = find_professor_courses
     courses.each do |course|
       events = find_professor_events(course)
-      course_events[course.id] = events
+      course_events[course] = events
     end
     course_events
   end

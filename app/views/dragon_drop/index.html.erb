@@ -20,10 +20,22 @@
 <%= collection_select(:course, :id, @courses, :id, :name) %>
 
 <table>
+  <% @unassigned_events.each do |course, events| %>
+      <tr style="height:100px">
+        <td style="width:100px"><%= course.name %></td>
+        <% events.each do |event| %>
+            <td style="width:100px">
+              <%= event.title %>
+            </td>
+        <% end %>
+      </tr>
+  <% end %>
+</table>
+
+<table>
   <tr style="height:100px">
     <td style="width:100px"></td>
-
-    <% %w(Sunday Monday Tuesday Wednesday Thursday Friday Saturday).each do |day| %>
+    <% Date::DAYNAMES.each do |day| %>
         <td style="width:100px">
           <%= day %>
         </td>
