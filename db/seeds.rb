@@ -116,9 +116,8 @@ end
 ################### ProfessorEvent #########################
 
 professors.each do |professor|
-  events = Event.all.sample(45)
-  Course.all.sample(3).each do |course|
-    course_events = events.pop(15)
+  Course.all.each do |course|
+    course_events = Event.all.sample(15)
     course_events.each do |event|
       ProfessorEvent.create(user_id: professor.id,
                             event_id: event.id,
@@ -133,9 +132,7 @@ Section.all.each do |section|
   section.professor_events.sample(15).each do |event|
     semester_start = section.semester_start
     semester_end = section.semester_end
-    rand_time = Time.at(semester_start.to_time.to_f +
-                            rand * (semester_end.to_time.to_f - semester_start.to_time.to_f))
-    random_day = rand_time.beginning_of_week.to_date + (section.days.sample-1).days
+    random_day = rand(semester_start..semester_end).beginning_of_week.to_date + (section.days.sample-1).days
     SectionEvent.create(section_id: section.id,
                         event_id: event.id,
                         start_date: random_day,
@@ -225,7 +222,7 @@ end
 
 ################### UserResponse #########################
 
-User.all.each do |user|
+User.where(:role => 1).each do |user|
   MultipleChoice.all.each do |multiple_choice|
     UserResponse.create(multiple_choice_id: multiple_choice.id,
                         user_id: user.id,
