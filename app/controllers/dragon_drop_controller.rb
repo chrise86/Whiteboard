@@ -37,7 +37,7 @@ class DragonDropController < ApplicationController
     @courses = user.find_professor_courses
 
     get_sections
-    get_unassigned_events
+    get_unassigned_events(6)
   end
 
   def test
@@ -55,9 +55,9 @@ class DragonDropController < ApplicationController
       {:section_id => section.id, :section_name => section.long_name}}
   end
 
-  def get_unassigned_events
+  def get_unassigned_events(semester = 1)
     user = User.first
-    @unassigned_events = user.find_courses_events
+    @unassigned_events = user.find_courses_events(semester)
   end
 
   def get_assigned_events
