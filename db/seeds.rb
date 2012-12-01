@@ -103,7 +103,7 @@ end
 
 Section.all.each do |section|
   Event.all.sample(35).each do |event|
-    rand_time = rand(2.week.to_i)
+    rand_time = rand(1.month.to_i) * [-1, 1].sample
     SectionEvent.create(section_id: section.id,
                         event_id: event.id,
                         start_date: Time.now + rand_time,
