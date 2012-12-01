@@ -25,7 +25,7 @@ User.create(first_name: "Drew",
             last_name: "Stephenson",
             email: "drew@drewstephenson.com",
             password: "shhh_secret",
-            role: 1)
+            role: 0)
 
 User.create(first_name: "Ryan",
             last_name: "DeMaeyor",
@@ -33,11 +33,11 @@ User.create(first_name: "Ryan",
             password: "last_secret",
             role: 1)
 
-95.times do |t|
+35.times do |t|
   User.create(first_name: "Test #{t.to_s}",
-              last_name: "User#{t.to_s}",
+              last_name: "User #{t.to_s}",
               email: "tuser#{t.to_s}@atestuser.com",
-              password: "secretpassword#{t.to_s}",
+              password: "secretpassword #{t.to_s}",
               role: 1)
 end
 
@@ -45,24 +45,38 @@ end
 
 3.times do |t|
   5.times do |u|
-    Course.create(name: "ITEC#{(t+1).to_s}#{u.to_s}01")
+    Course.create(name: "ITEC#{(t+1).to_s}#{u.to_s}#{(0..(5+t)).to_a.sample}#{u<1 ? 1 : 0}")
   end
 end
 
 ################### Section #########################
 
+days1 = "123456".split ""
+days2 = "12345".split ""
+day_combinations = days1.combination(1).to_a.push(*days2.combination(2).to_a).push(*days2.combination(3).to_a)
+day_combinations.collect! {|meeting_days| meeting_days.join}
+
 Course.all.each do |course|
   5.times do |section|
     Section.create(course_id: course.id,
                    section_number: section + 1,
-                   semester_id: [1,2,3].sample)
+                   semester_id: [1,2,3].sample,
+                   meeting_days: day_combinations.sample)
   end
 end
 
 ################### UserSection #########################
 
-User.all.each do |user|
-  courses = Course.all.sample(4)
+professors = User.where(:role => 0)
+all_sections = Section.all
+professors.each do |professor|
+  all_sections.pop(25).each do |section|
+    UserSection.create(user_id: professor.id, section_id: section.id)
+  end
+end
+
+User.where(:role => 1).each do |user|
+  courses = Course.all.sample([3,4].sample)
   courses.each do |course|
     sections = Section.where(:course_id => course.id)
     grade_random = rand(101)
@@ -72,22 +86,22 @@ end
 
 ################### Category #########################
 
-2.times do |t|
+professors.each do |professor|
   Category.create(weight: 25.00,
                   name: "Test",
-                  user_id: t+1)
+                  user_id: professor.id)
 
   Category.create(weight: 15.00,
                   name: "Quiz",
-                  user_id: t+1)
+                  user_id: professor.id)
 
   Category.create(weight: 15.00,
                   name: "Assignment",
-                  user_id: t+1)
+                  user_id: professor.id)
 
   Category.create(weight: 45.00,
                   name: "Project",
-                  user_id: t+1)
+                  user_id: professor.id)
 end
 
 ################### Event #########################
@@ -99,15 +113,33 @@ end
                attachment: "")
 end
 
+################### ProfessorEvent #########################
+
+professors.each do |professor|
+  events = Event.all.sample(45)
+  Course.all.sample(3).each do |course|
+    course_events = events.pop(15)
+    course_events.each do |event|
+      ProfessorEvent.create(user_id: professor.id,
+                            event_id: event.id,
+                            course_id: course.id)
+    end
+  end
+end
+
 ################### SectionEvent #########################
 
 Section.all.each do |section|
-  Event.all.sample(35).each do |event|
-    rand_time = rand(1.month.to_i) * [-1, 1].sample
+  events = Event.where(:event_id => ProfessorEvent.where(:user_id => section.professor.id).event_id,
+                       :course_id => section.course)
+  events.sample(15).each do |event|
+    semester_start = section.semester_start
+    semester_end = section.semester_end
+    rand_time = Time.at(semester_start + rand * (semester_end.to_f - semester_start.to_f))
     SectionEvent.create(section_id: section.id,
                         event_id: event.id,
-                        start_date: Time.now + rand_time,
-                        end_date: Time.now + (1.hour + 15.minute).to_i + rand_time)
+                        start_date: rand_time,
+                        end_date: (1.hour + 15.minute) + rand_time)
   end
 end
 
@@ -120,12 +152,9 @@ end
 
 ################### Gradebook #########################
 
-random_users = User.all.sample(24)
-random_users.each do |user|
-  user_sections = user.find_all_sections
-  user_sections.each do |section|
-    section_events = Event.find_all_for_section(section.id)
-    section_events.each do |event|
+User.where(:role => 1).each do |user|
+  user.sections.each do |section|
+    section.events.each do |event|
       Gradebook.create(user_id: user.id,
                        section_id: section.id,
                        event_id: event.id)
@@ -137,22 +166,8 @@ end
 
 Gradebook.all.each do |grade|
   Grade.create(gradebook_id: grade.id,
-               grade: rand(101),
+               grade: rand(101).to_f,
                file: "")
-end
-
-################### ProfessorEvent #########################
-
-2.times do |professor|
-  events = Event.all.sample(30)
-  Course.all.sample(3).each do |course|
-    course_events = events.pop(10)
-    course_events.each do |event|
-      ProfessorEvent.create(user_id: professor+1,
-                            event_id: event.id,
-                            course_id: course.id)
-    end
-  end
 end
 
 ################### Question #########################

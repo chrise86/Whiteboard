@@ -40,6 +40,14 @@ class DragonDropController < ApplicationController
     get_unassigned_events
   end
 
+  def test
+    user = User.first
+    @courses = user.find_professor_courses
+
+    get_sections
+    get_unassigned_events
+  end
+
   def get_sections
     user = User.first
     @assigned_events = user.find_all_sections_and_their_events_formatted
