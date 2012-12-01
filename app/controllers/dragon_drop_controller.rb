@@ -43,7 +43,7 @@ class DragonDropController < ApplicationController
   def get_sections
     user = User.first
     @assigned_events = user.find_all_sections_and_their_events_formatted
-    @sections = user.find_all_sections.collect {|section|
+    @sections = user.sections.collect {|section|
       {:section_id => section.id, :section_name => section.long_name}}
   end
 

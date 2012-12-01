@@ -15,14 +15,14 @@ class User < ActiveRecord::Base
   has_many :user_sections
   has_many :sections, :through => :user_sections
 
+  # Ian Graham
   # Returns an array of all the sections a user belongs to
-  def find_all_sections
+  def sections
     # Get an array of UserSections for the user, then go through each of those UserSections, and pull out the section
    UserSection.where(:user_id => id).collect { |us| Section.find_by_id(us.section_id) }
   end
 
   def find_sections_events
-    sections = find_all_sections
     sections_events = {}
     sections.each do |section|
       events = section.find_all_events_with_id_title_and_time
@@ -34,14 +34,14 @@ class User < ActiveRecord::Base
   # Returns an array of all the sections a user belongs to
   def find_all_sections_formatted
     # Get an array of UserSections for the user, then go through each of those UserSections, and pull out the section
-    find_all_sections.collect { |s| { :id => s.id, :name => s.name } }
+    sections.collect { |s| { :id => s.id, :name => s.name } }
   end
 
   # Returns an array formatted as: [ section => [events, events, events, etc], etc ]
   def find_all_sections_and_their_events
     # Get the array of sections for a user, then go through each section and create a hash where
     # the key is the section, and the value is an array of events for that particular section.
-    find_all_sections.collect { |s| {s => s.find_all_events} }
+    sections.collect { |s| {s => s.events} }
   end
 
   # Returns sections and events in the following format:
@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   def find_all_sections_and_their_events_formatted
     # Get the array of sections for a user, then go through each section and create a hash where
     # the key is the section, and the value is an array of events for that particular section.
-    find_all_sections.collect { |s| s.find_all_events_with_id_title_and_time }.flatten
+    sections.collect { |s| s.find_all_events_with_id_title_and_time }.flatten
   end
 
 
@@ -91,7 +91,7 @@ class User < ActiveRecord::Base
     end
 
     #find all of the user sections under the professor's user ID
-    user_sections = find_all_sections
+    user_sections = sections
 
     #filter out the sections that the professor actually has
     #for every section in the list of sections extracted from professor courses,
