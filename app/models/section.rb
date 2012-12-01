@@ -76,4 +76,9 @@ class Section < ActiveRecord::Base
     "#{name} - #{section_number}"
   end
 
+  def professor_events
+    ProfessorEvent.where(:user_id => professor.id, :course_id => section.course).collect {|prof_event|
+      Event.find_by_id(prof_event.event_id)}
+  end
+
 end
