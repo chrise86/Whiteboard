@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20121104063822) do
     t.integer  "course_id"
     t.integer  "section_number"
     t.integer  "semester_id"
+    t.string   "meeting_days"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end

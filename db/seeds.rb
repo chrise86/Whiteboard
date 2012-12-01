@@ -135,11 +135,13 @@ Section.all.each do |section|
   events.sample(15).each do |event|
     semester_start = section.semester_start
     semester_end = section.semester_end
+    random_day = section.days.sample.to_i
     rand_time = Time.at(semester_start + rand * (semester_end.to_f - semester_start.to_f))
+    rand_date = Date.commercial(Time.now.year, rand_time.week, random_day)
     SectionEvent.create(section_id: section.id,
                         event_id: event.id,
-                        start_date: rand_time,
-                        end_date: (1.hour + 15.minute) + rand_time)
+                        start_date: rand_date,
+                        end_date: rand_date + (1.hour + 15.minute))
   end
 end
 

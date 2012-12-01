@@ -1,5 +1,5 @@
 class Section < ActiveRecord::Base
-  attr_accessible :course_id, :section_number, :semester_id
+  attr_accessible :course_id, :section_number, :semester_id, :meeting_days
   has_many :gradebooks
   has_many :user_sections
   has_many :users, :through => :user_sections
@@ -7,12 +7,12 @@ class Section < ActiveRecord::Base
   has_many :events, :through => :section_events
   belongs_to :course, :foreign_key => :course_id
 
-  def find_all_events
+  def events
     SectionEvent.where(:section_id => id).collect { |se| Event.find_by_id(se.event_id) }
   end
 
   def find_all_events_with_id_title_and_time
-    find_all_events.collect { |e|
+    events.collect { |e|
       {
           :course_name => name,
           :section_id => id,
@@ -23,18 +23,55 @@ class Section < ActiveRecord::Base
     }
   end
 
+  # Ian Graham
+  def days
+    meeting_days.split("").collect {|day| day.to_i}
+  end
+
   def find_all_sections_for_month(month = Date.today.month)
     SectionEvent.where(:section_id => id).select { |se| end_date.month == Date.today.month }
   end
 
+  # Ian Graham
+  def semester_start
+    current_year = Date.today.year
+    if semester_id == 1
+      Date.new(current_year, 1, 1.week.to_i)
+    elsif semester_id == 2
+      return Date.new(current_year, 5, 3.week.to_i)
+    elsif semester_id == 3
+      return Date.new(current_year, 8, 2.week.to_i)
+    end
+  end
+
+  # Ian Graham
+  def semester_end
+    current_year = Date.today.year
+    if semester_id == 1
+      Date.new(current_year, 5, 1.week.to_i)
+    elsif semester_id == 2
+      return Date.new(current_year, 7, 4.week.to_i)
+    elsif semester_id == 3
+      return Date.new(current_year, 12, 1.week.to_i)
+    end
+  end
+
+  # Ian Graham
   def name
     course.name
   end
 
+  # Ian Graham
   def course
     Course.find_by_id(course_id)
   end
 
+  # Ian Graham
+  def professor
+    User.find_by_id(UserSection.where(:section_id => id).first)
+  end
+
+  # Ian Graham
   def long_name
     "#{name} - #{section_number}"
   end
