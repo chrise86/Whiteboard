@@ -130,9 +130,7 @@ end
 ################### SectionEvent #########################
 
 Section.all.each do |section|
-  events = Event.where(:event_id => ProfessorEvent.where(:user_id => section.professor.id).event_id,
-                       :course_id => section.course)
-  events.sample(15).each do |event|
+  section.professor_events.sample(15).each do |event|
     semester_start = section.semester_start
     semester_end = section.semester_end
     random_day = section.days.sample.to_i
