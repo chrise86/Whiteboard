@@ -36,11 +36,11 @@ class Section < ActiveRecord::Base
   def semester_start
     current_year = Date.today.year
     if semester_id == 1
-      Date.new(current_year, 1, 1.week.to_i)
+      Date.new(current_year, 1, 7)
     elsif semester_id == 2
-      return Date.new(current_year, 5, 3.week.to_i)
+      return Date.new(current_year, 5, 21)
     elsif semester_id == 3
-      return Date.new(current_year, 8, 2.week.to_i)
+      return Date.new(current_year, 8, 14)
     end
   end
 
@@ -48,11 +48,11 @@ class Section < ActiveRecord::Base
   def semester_end
     current_year = Date.today.year
     if semester_id == 1
-      Date.new(current_year, 5, 1.week.to_i)
+      Date.new(current_year, 5, 7)
     elsif semester_id == 2
-      return Date.new(current_year, 7, 4.week.to_i)
+      return Date.new(current_year, 7, 28)
     elsif semester_id == 3
-      return Date.new(current_year, 12, 1.week.to_i)
+      return Date.new(current_year, 12, 7)
     end
   end
 
@@ -68,7 +68,7 @@ class Section < ActiveRecord::Base
 
   # Ian Graham
   def professor
-    User.find_by_id(UserSection.where(:section_id => id).first)
+    User.find_by_id(UserSection.where(:section_id => id).first.user_id)
   end
 
   # Ian Graham
@@ -77,7 +77,7 @@ class Section < ActiveRecord::Base
   end
 
   def professor_events
-    ProfessorEvent.where(:user_id => professor.id, :course_id => section.course).collect {|prof_event|
+    ProfessorEvent.where(:user_id => professor.id, :course_id => course.id).collect {|prof_event|
       Event.find_by_id(prof_event.event_id)}
   end
 
