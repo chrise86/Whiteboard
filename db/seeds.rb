@@ -70,7 +70,7 @@ end
 professors = User.where(:role => 0)
 all_sections = Section.all
 professors.each do |professor|
-  all_sections.pop(all_sections.size/professors.size).each do |section|
+  all_sections.pop(25).each do |section|
     UserSection.create(user_id: professor.id, section_id: section.id)
   end
 end
