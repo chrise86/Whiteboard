@@ -37,15 +37,12 @@ class DragonDropController < ApplicationController
     @courses = user.find_professor_courses
 
     get_sections
-    get_unassigned_events(6)
+    get_unassigned_events(5)
+    get_assigned_events(@course.first, 5)
   end
 
   def test
-    user = User.first
-    @courses = user.find_professor_courses
-
-    get_sections
-    get_unassigned_events
+    index
   end
 
   def get_sections
@@ -60,9 +57,9 @@ class DragonDropController < ApplicationController
     @unassigned_events = user.find_courses_events(semester)
   end
 
-  def get_assigned_events
+  def get_assigned_events(course, semester)
     user = User.first
-    respond_with @assigned_events = user.find_all_sections_and_their_events.collect {|section, events|
+    respond_with @assigned_events = user.find_all_sections_and_their_events(course, semester).collect {|section, events|
     events.each {|event| {section_id: section.id, event_id: event.id}}}
   end
 

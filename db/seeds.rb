@@ -57,10 +57,10 @@ day_combinations = days1.combination(1).to_a.push(*days2.combination(2).to_a).pu
 day_combinations.collect! {|meeting_days| meeting_days.join}
 
 Course.all.each do |course|
-  5.times do |section|
+  15.times do |section|
     Section.create(course_id: course.id,
                    section_number: section + 1,
-                   semester_id: [1,2,3].sample,
+                   semester_id: rand(0..5),
                    meeting_days: day_combinations.sample)
   end
 end
@@ -70,7 +70,7 @@ end
 professors = User.where(:role => 0)
 all_sections = Section.all
 professors.each do |professor|
-  all_sections.pop(25).each do |section|
+  all_sections.pop(all_sections.size/professors.size).each do |section|
     UserSection.create(user_id: professor.id, section_id: section.id)
   end
 end

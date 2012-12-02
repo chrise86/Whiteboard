@@ -37,11 +37,10 @@ class User < ActiveRecord::Base
     sections.collect { |s| { :id => s.id, :name => s.name } }
   end
 
+  # Ian Graham
   # Returns an array formatted as: [ section => [events, events, events, etc], etc ]
-  def find_all_sections_and_their_events
-    # Get the array of sections for a user, then go through each section and create a hash where
-    # the key is the section, and the value is an array of events for that particular section.
-    sections.collect { |s| {s => s.events} }
+  def find_all_sections_and_their_events(course = find_professor_courses.first, semester = 5)
+    sections.reject {|section| section.semester_id!=semester or section.course_id!=course.id}.collect {|s| {s => s.events}}
   end
 
   # Returns sections and events in the following format:
