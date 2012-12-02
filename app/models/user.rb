@@ -66,19 +66,20 @@ class User < ActiveRecord::Base
     ProfessorEvent.where(:user_id => id).collect {|prof_event| Course.find_by_id(prof_event.course_id)}.uniq
   end
 
-  def find_courses_events
+  def find_courses_events(semester = 1)
     course_events = {}
     courses = find_professor_courses
     courses.each do |course|
-      events = find_professor_events(course)
+      events = find_professor_events(course, semester)
       course_events[course] = events
     end
     course_events
   end
 
-  def find_professor_events(course)
+  def find_professor_events(course, semester = 1)
     events = ProfessorEvent.where(:user_id => id,
-                                  :course_id => course.id)
+                                  :course_id => course.id,
+                                  :semester_id => semester)
     events.collect! {|e| Event.find_by_id(e.event_id)}
   end
 

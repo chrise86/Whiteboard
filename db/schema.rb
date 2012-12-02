@@ -74,8 +74,9 @@ ActiveRecord::Schema.define(:version => 20121104063822) do
     t.integer  "user_id"
     t.integer  "event_id"
     t.integer  "course_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "semester_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "questions", :force => true do |t|

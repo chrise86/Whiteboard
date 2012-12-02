@@ -43,9 +43,9 @@ end
 
 ################### Course #########################
 
-3.times do |t|
-  5.times do |u|
-    Course.create(name: "ITEC#{(t+1).to_s}#{u.to_s}#{(0..(5+t)).to_a.sample}#{u<1 ? 1 : 0}")
+2.times do |course_level|
+  3.times do |course_type|
+    Course.create(name: "ITEC#{course_level+1}#{course_type}#{rand(0..course_level+5)}0")
   end
 end
 
@@ -121,7 +121,8 @@ professors.each do |professor|
     course_events.each do |event|
       ProfessorEvent.create(user_id: professor.id,
                             event_id: event.id,
-                            course_id: course.id)
+                            course_id: course.id,
+                            semester_id: rand(0..5))
     end
   end
 end
@@ -129,7 +130,7 @@ end
 ################### SectionEvent #########################
 
 Section.all.each do |section|
-  section.professor_events.sample(15).each do |event|
+  section.professor_events.sample(7).each do |event|
     semester_start = section.semester_start
     semester_end = section.semester_end
     random_day = rand(semester_start..semester_end).beginning_of_week.to_date + (section.days.sample-1).days
