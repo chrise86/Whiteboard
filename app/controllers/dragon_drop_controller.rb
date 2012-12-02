@@ -37,7 +37,7 @@ class DragonDropController < ApplicationController
     @courses = user.find_professor_courses
 
     get_sections
-    get_unassigned_events(6)
+    get_unassigned_events(5)
   end
 
   def test
@@ -45,7 +45,7 @@ class DragonDropController < ApplicationController
     @courses = user.find_professor_courses
 
     get_sections
-    get_unassigned_events
+    get_unassigned_events(5)
   end
 
   def get_sections
