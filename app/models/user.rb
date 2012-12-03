@@ -40,7 +40,9 @@ class User < ActiveRecord::Base
   # Ian Graham
   # Returns an array formatted as: [ section => [events, events, events, etc], etc ]
   def find_all_sections_and_their_events(course = find_professor_courses.first, semester = 5)
-    sections.reject {|section| section.semester_id!=semester or section.course_id!=course.id}.collect {|s| {s => s.events}}
+    sections.select {|section|
+      section.semester_id==semester and section.course_id==course.id}.collect {|s|
+      {s => s.events}}.reduce Hash.new, :update
   end
 
   # Returns sections and events in the following format:
@@ -60,6 +62,16 @@ class User < ActiveRecord::Base
     sections.collect { |s| s.find_all_events_with_id_title_and_time }.flatten
   end
 
+  # This method takes in a semester number, in the same format that the Section model is generated
+  # in the seed, and finds sections for the semester given, then finds all the unique courses for these sections.
+  def find_semester_courses(semester = Section.date_to_semester_num(Date.today))
+    find_all_sections_by_semester(semester).collect {|section|
+      Course.find_by_id(section.course_id)}.uniq
+  end
+
+  def find_all_sections_by_semester(semester=Section.date_to_semester_num(Date.today))
+    sections.reject {|section| section.semester_id!=semester}
+  end
 
   def find_professor_courses
     ProfessorEvent.where(:user_id => id).collect {|prof_event| Course.find_by_id(prof_event.course_id)}.uniq

@@ -34,33 +34,41 @@ class DragonDropController < ApplicationController
 
   def index
     user = User.first
-    @courses = user.find_professor_courses
-
-    get_sections
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
+    @courses = user.find_semester_courses(Section.date_to_semester_num(@date))
+    @course = params[:course] || @courses.first
     get_unassigned_events(5)
-    get_assigned_events(@course.first, 5)
+    get_assigned_events(@course, @date)
   end
 
   def test
     index
   end
 
-  def get_sections
-    user = User.first
-    @assigned_events = user.find_all_sections_and_their_events_formatted
-    @sections = user.sections.collect {|section|
-      {:section_id => section.id, :section_name => section.long_name}}
-  end
+  #def get_sections
+  #  user = User.first
+  #  @assigned_events = user.find_all_sections_and_their_events_formatted
+  #  @sections = user.sections.collect {|section|
+  #    {:section_id => section.id, :section_name => section.long_name}}
+  #end
 
   def get_unassigned_events(semester = 1)
     user = User.first
     @unassigned_events = user.find_courses_events(semester)
   end
 
-  def get_assigned_events(course, semester)
+  def get_assigned_events(course, date)
+    #require "pry";
     user = User.first
-    respond_with @assigned_events = user.find_all_sections_and_their_events(course, semester).collect {|section, events|
-    events.each {|event| {section_id: section.id, event_id: event.id}}}
+    semester = Section.date_to_semester_num(date)
+    sections_events = user.find_all_sections_and_their_events(course, semester)
+    @sections = sections_events.keys.collect {|section| {:section_id => section.id, :section_name => section.long_name}}
+    some_list = @sections.collect {|section| SectionEvent.find_all_by_section_id(section[:section_id])}.flatten
+    @assigned_events = some_list.collect {|se|
+      {:event_id => se.event_id, :section_id => se.section_id,
+       :end_date => se.end_date, :event_title => Event.find_by_id(se.event_id).title}}
+    #binding.pry
+    respond_with @assigned_events
   end
 
 end

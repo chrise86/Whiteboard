@@ -32,8 +32,44 @@ class Section < ActiveRecord::Base
     SectionEvent.where(:section_id => id).select { |se| se.end_date.month == month }
   end
 
+  # Ian Graham
   def semester
     semester_id%3
+  end
+
+  # Ian Graham
+  # Returns the semester_id number which would normally be returned by the section's parameter.
+  # The purpose of this method is to give the ability to determine which particular semester
+  # the passed in date is in (or just the current date)
+  def Section.date_to_semester_num(date = Date.today)
+    year = (date.year.to_i - 2011)*3
+    if spring_semester? date
+    elsif summer_semester? date
+      return year + 1
+    elsif fall_semester? date
+      return year + 2
+    end
+  end
+
+  # Ian Graham
+  # Returns a boolean value depicting whether or not the date parameter passed in is within the range
+  # of dates of the Spring semester.
+  def Section.spring_semester?(date = Date.today)
+    (Date.new(date.year, 1, 7)..Date.new(date.year, 5, 7)).include? date
+  end
+
+  # Ian Graham
+  # Returns a boolean value depicting whether or not the date parameter passed in is within the range
+  # of dates of the Summer semester.
+  def Section.summer_semester?(date = Date.today)
+    (Date.new(date.year, 5, 21)..Date.new(date.year, 7, 28)).include? date
+  end
+
+  # Ian Graham
+  # Returns a boolean value depicting whether or not the date parameter passed in is within the range
+  # of dates of the Fall semester.
+  def Section.fall_semester?(date = Date.today)
+    (Date.new(date.year, 8, 14)..Date.new(date.year, 12, 7)).include? date
   end
 
   # Ian Graham
