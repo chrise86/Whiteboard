@@ -70,7 +70,7 @@ end
 professors = User.where(:role => 0)
 all_sections = Section.all
 professors.each do |professor|
-  all_sections.pop(25).each do |section|
+  all_sections.pop(30).each do |section|
     UserSection.create(user_id: professor.id, section_id: section.id)
   end
 end
@@ -131,8 +131,8 @@ end
 
 Section.all.each do |section|
   section.professor_events.sample(7).each do |event|
-    semester_start = section.semester_start
-    semester_end = section.semester_end
+    semester_start = section.semester_start.to_time
+    semester_end = section.semester_end.to_time
     random_day = rand(semester_start..semester_end).beginning_of_week.to_date + (section.days.sample-1).days
     SectionEvent.create(section_id: section.id,
                         event_id: event.id,

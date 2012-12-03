@@ -29,17 +29,21 @@ class Section < ActiveRecord::Base
   end
 
   def find_all_sections_for_month(month = Date.today.month)
-    SectionEvent.where(:section_id => id).select { |se| end_date.month == Date.today.month }
+    SectionEvent.where(:section_id => id).select { |se| se.end_date.month == month }
+  end
+
+  def semester
+    semester_id%3
   end
 
   # Ian Graham
   def semester_start
     current_year = Date.today.year
-    if semester_id == 1
+    if semester == 0
       Date.new(current_year, 1, 7)
-    elsif semester_id == 2
+    elsif semester == 1
       return Date.new(current_year, 5, 21)
-    elsif semester_id == 3
+    elsif semester == 2
       return Date.new(current_year, 8, 14)
     end
   end
@@ -47,11 +51,11 @@ class Section < ActiveRecord::Base
   # Ian Graham
   def semester_end
     current_year = Date.today.year
-    if semester_id == 1
+    if semester == 0
       Date.new(current_year, 5, 7)
-    elsif semester_id == 2
+    elsif semester == 1
       return Date.new(current_year, 7, 28)
-    elsif semester_id == 3
+    elsif semester == 2
       return Date.new(current_year, 12, 7)
     end
   end
