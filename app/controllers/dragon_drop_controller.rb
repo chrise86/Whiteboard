@@ -6,10 +6,9 @@ class DragonDropController < ApplicationController
     @date = params[:date] ? Date.parse(params[:date]) : Date.today
 
     # Calculate the first day that appears on the calendar
-    @calendar_start_day = @date.beginning_of_week - (@date.beginning_of_month.wday)
+    #@calendar_start_day = @date.beginning_of_week - (@date.beginning_of_month.wday)
 
     user = User.first
-    @date = params[:date] ? Date.parse(params[:date]) : Date.today
     @courses = user.find_semester_courses(Section.date_to_semester_num(@date))
     @course = params[:course] || @courses.first
     get_unassigned_events(5)

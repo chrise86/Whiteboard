@@ -1,10 +1,10 @@
 
     <style>
-        .event{ width: 0px; height: 0px; padding: 20px; background-color:#e06043;}
-        #Event1{width:60px; height:60px; margin: 2px; padding:10px; background-color:#C60; float:left;}
-        #draggableContainer{background-color:#0F3; padding:20px; text-align:center; }
+        .event{ padding: 10px; background-color:#5f9ea0; font-size:12px; margin:4px;}
+        .Event1 {width:60px; min-height:60px; margin: 2px; padding:10px; background-color:#5f9ea0; float:left; color:white;}
+        #draggableContainer{ padding:20px; text-align:center; }
 
-        .droppableDiv { width: 100px; height: 150px; padding: 0.5em; background-color:#C33}
+        .droppableDiv { width: 100px; min-height: 150px; padding: 0.5em; background-color:#C33}
         .drophover{ background-color: #1d5987;}
 
         table td
@@ -20,7 +20,7 @@
             $('#draggableContainer');
 
             // Make unassigned divs draggable
-            $($.find(".event1")).draggable({ opacity: 0.35 , containment: 'document', cursor:'pointer', revert: true});
+            $($.find(".Event1")).draggable({ opacity: 0.35 , containment: 'document', cursor:'pointer', revert: true});
 
             // Make droppableDivs droppable!
             $($.find( ".droppableDiv")).droppable({ hoverClass: 'drophover', tolerance:'pointer',
@@ -62,7 +62,7 @@
 
             <%#= course.name %>
             <% events.each do |event| %>
-                <div id="Event1" class="event1">
+                <div id="Event1" class="Event1">
                     <%= event.title %>
                 </div>
 
@@ -70,6 +70,11 @@
 
         <% end %>
     </div>
+
+    <div style="clear:both;"><br/></div>
+
+    <%= link_to "Previous Week", :controller => "dragon_drop", :action => "index", :date => (@date - 1.week).to_s %>
+    | <%= link_to "Next Week", :controller => "dragon_drop", :action => "index", :date => (@date + 1.week).to_s %>
 
     <!--Create the weekly section view-->
     <table>
@@ -93,16 +98,17 @@
             <td>
                 <!-- Create the DropZone area -->
                 <div class="droppableDiv" title="Today">
-                DropZone
+                .
+                  <!-- Add events to the DropZone -->
+                  <% @assigned_events.select { |event|
+                    event[:end_date].wday==day and event[:section_id]==section[:section_id]}.each do |event| %>
+                      <div class="event" event_id="<%= event[:event_id] %>">
+                        <%= event[:event_title] %>
+                      </div>
+                  <% end %>
                 </div>
 
-                <!-- Add events to the DropZone -->
-                <% @assigned_events.select { |event|
-                    event[:end_date].wday==day and event[:section_id]==section[:section_id]}.each do |event| %>
-                    <div class="<%= event[:event_id] %>">
-                        <%= event[:event_title] %>
-                    </div>
-                <% end %>
+
             </td>
 
             <% end %>
