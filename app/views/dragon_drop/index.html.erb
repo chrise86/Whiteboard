@@ -1,61 +1,111 @@
-<script type="text/javascript">
 
-    $(document).ready(function()
-    {
-      get_dragon_drop_data();
-    });
-    function get_content()
-    {
-        $.getJSON("<%=dragon_drop_index_path%>", function(data)
+    <style>
+        .event{ width: 0px; height: 0px; padding: 20px; background-color:#e06043;}
+        #Event1{width:60px; height:60px; margin: 2px; padding:10px; background-color:#C60; float:left;}
+        #draggableContainer{background-color:#0F3; padding:20px; text-align:center; }
+
+        .droppableDiv { width: 100px; height: 150px; padding: 0.5em; background-color:#C33}
+        .drophover{ background-color: #1d5987;}
+
+        table td
         {
-           for(var i = 0; i < data.length; i++)
-           {
+            vertical-align:text-top;
+            background: #f5f5dc;
+        }
 
-           }
+    </style>
+
+    <script>
+        $(function() {
+            $('#draggableContainer');
+
+            // Make unassigned divs draggable
+            $($.find(".event1")).draggable({ opacity: 0.35 , containment: 'document', cursor:'pointer', revert: true});
+
+            // Make droppableDivs droppable!
+            $($.find( ".droppableDiv")).droppable({ hoverClass: 'drophover', tolerance:'pointer',
+                over: function()
+                {
+                    //execute code you want when users hover in but havent dropped
+                    $('#droppableDiv').text('here');
+                },
+                out: function()
+                {
+                    //execute code you want when users hover out
+                    $('#droppableDiv').text('out');
+                },
+                drop: function(event, ui)
+                {
+                    //drop function with ui so we can receive div data
+                    var draggableid = ui.draggable.attr("id");
+                    var draggableClass = ui.draggable.attr("class");
+                    var droppableId = $(this).attr("title");
+                    if(draggableid == "draggableContainer")
+                    {
+                        //do nothing
+                        alert("you shouldnt drag the container over the calender")
+                    }
+                    else
+                    {
+                        alert("you dropped " + draggableid + " on " + droppableId);
+                        $( this ).addClass("alert")
+                    }
+                }
+            });
         });
-    }
+    </script>
 
-</script>
+    <%= collection_select(:course, :id, @courses, :id, :name) %>
 
-<%= collection_select(:course, :id, @courses, :id, :name) %>
+    <div id="draggableContainer">
+        <% @unassigned_events.each do |course, events| %>
 
-<table>
-  <% @unassigned_events.each do |course, events| %>
-      <tr style="height:100px">
-        <td style="width:100px"><%= course.name %></td>
-        <% events.each do |event| %>
-            <td style="width:100px">
-              <%= event.title %>
-            </td>
+            <%#= course.name %>
+            <% events.each do |event| %>
+                <div id="Event1" class="event1">
+                    <%= event.title %>
+                </div>
+
+            <% end %>
+
         <% end %>
-      </tr>
-  <% end %>
-</table>
+    </div>
 
-<table>
-  <tr style="height:100px">
-    <td style="width:100px"></td>
-    <% Date::DAYNAMES.each do |day| %>
-        <td style="width:100px">
-          <%= day %>
-        </td>
-    <% end %>
-  </tr>
-  <% @sections.each do |section| %>
-      <tr style="height:100px">
-        <td style="width:100px">
-          <%= section[:section_name] %>
-        </td>
-        <% 7.times do |day| %>
+    <!--Create the weekly section view-->
+    <table>
+        <tr>
+            <td></td>
+            <!-- Generate the days of the week -->
+            <% Date::DAYNAMES.each do |day| %>
             <td style="width:100px">
-              <% @assigned_events.select { |event|
-                event[:end_date].wday==day and event[:section_id]==section[:section_id]}.each do |event| %>
-                <div class="<%= event[:event_id] %>"><%= event[:event_title] %></div>
-              <% end %>
+                <%= day %>
             </td>
-        <% end %>
-      </tr>
-  <% end %>
-</table>
+            <% end %>
+        </tr>
+        <!-- Go through each of the sections, and create a row for it -->
+        <% @sections.each do |section| %>
+        <tr>
+            <td>
+                <%= section[:section_name] %>
+            </td>
 
-<button onclick="window.open('/events/new','Event Creator',' width=800,height=600')">Create New Event</button>
+            <% 7.times do |day| %>
+            <td>
+                <!-- Create the DropZone area -->
+                <div id="" class="droppableDiv" title="Today">
+                DropZone
+                </div>
+
+                <!-- Add events to the DropZone -->
+                <% @assigned_events.select { |event|
+                    event[:end_date].wday==day and event[:section_id]==section[:section_id]}.each do |event| %>
+                    <div class="<%= event[:event_id] %>">
+                        <%= event[:event_title] %>
+                    </div>
+                <% end %>
+            </td>
+
+            <% end %>
+        </tr>
+        <% end %>
+    </table>
