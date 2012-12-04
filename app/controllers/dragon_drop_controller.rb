@@ -2,6 +2,20 @@ class DragonDropController < ApplicationController
 
   respond_to :json, :html
 
+  def index
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
+
+    # Calculate the first day that appears on the calendar
+    @calendar_start_day = @date.beginning_of_week - (@date.beginning_of_month.wday)
+
+    user = User.first
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
+    @courses = user.find_semester_courses(Section.date_to_semester_num(@date))
+    @course = params[:course] || @courses.first
+    get_unassigned_events(5)
+    get_assigned_events(@course, @date)
+  end
+
   def add_event_to_section(section_id, event_id)
     SectionEvent.create(section_id: section_id, event_id: event_id)
   end
@@ -31,26 +45,6 @@ class DragonDropController < ApplicationController
   def change_course(course_id)
 
   end
-
-  def index
-    user = User.first
-    @date = params[:date] ? Date.parse(params[:date]) : Date.today
-    @courses = user.find_semester_courses(Section.date_to_semester_num(@date))
-    @course = params[:course] || @courses.first
-    get_unassigned_events(5)
-    get_assigned_events(@course, @date)
-  end
-
-  def test
-    index
-  end
-
-  #def get_sections
-  #  user = User.first
-  #  @assigned_events = user.find_all_sections_and_their_events_formatted
-  #  @sections = user.sections.collect {|section|
-  #    {:section_id => section.id, :section_name => section.long_name}}
-  #end
 
   def get_unassigned_events(semester = 1)
     user = User.first
