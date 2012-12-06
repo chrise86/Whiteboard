@@ -39,7 +39,8 @@
                     //drop function with ui so we can receive div data
                     var draggableid = ui.draggable.attr("id");
                     var draggableClass = ui.draggable.attr("class");
-                    var droppableId = $(this).attr("title");
+                    var droppableDate = $(this).attr("date");
+                    var droppableSectionID = $(this).attr("section_id");
                     if(draggableid == "draggableContainer")
                     {
                         //do nothing
@@ -47,7 +48,7 @@
                     }
                     else
                     {
-                        alert("you dropped " + draggableid + " on " + droppableId);
+                        alert("You've added an event to section " + droppableSectionID + ", to be assigned on ", droppableDate );
                         $( this ).addClass("alert")
                     }
                 }
@@ -97,7 +98,7 @@
             <% 7.times do |day| %>
             <td>
                 <!-- Create the DropZone area -->
-                <div class="droppableDiv" title="Today">
+                <div class="droppableDiv" title="Today" date=<%= @calendar_start_day + day.day %> section_id="<%= section[:section_id] %>">
                 .
                   <!-- Add events to the DropZone -->
                   <% @assigned_events.select { |event|
