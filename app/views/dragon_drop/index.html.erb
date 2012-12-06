@@ -37,10 +37,13 @@
                 drop: function(event, ui)
                 {
                     //drop function with ui so we can receive div data
-                    var draggableid = ui.draggable.attr("id");
+                    var draggableid = ui.draggable.text();
                     var draggableClass = ui.draggable.attr("class");
                     var droppableDate = $(this).attr("date");
                     var droppableSectionID = $(this).attr("section_id");
+
+                    $(this).append("<div class='event'>" + draggableid + "</div>");
+
                     if(draggableid == "draggableContainer")
                     {
                         //do nothing
