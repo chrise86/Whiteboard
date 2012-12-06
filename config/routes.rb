@@ -1,4 +1,7 @@
 SuperWhiteboard::Application.routes.draw do
+
+  root :to => 'calendar#index'
+
   get "calendar/index"
 
   get "calendar/get_section_events_pairs"
@@ -59,7 +62,9 @@ SuperWhiteboard::Application.routes.draw do
 
   get "events/add_question"
 
-  get "event/show"
+  get "events/show", :as => :json
+
+  resource :events, :except => [:show]
 
   devise_for :users
 
