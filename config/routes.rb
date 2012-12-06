@@ -1,6 +1,8 @@
 SuperWhiteboard::Application.routes.draw do
   get "calendar/index"
 
+  get "calendar/get_section_events_pairs"
+
   get "gradebook/index"
 
   get "gradebook/add_category"
@@ -47,19 +49,21 @@ SuperWhiteboard::Application.routes.draw do
 
   get "dragon_drop/change_course"
 
-  get "event/add_question"
+  get "dragon_drop/index"
 
-  get "event/remove_question"
+  get "dragon_drop/get_sections"
 
-  get "event/add_new_download"
+  get "dragon_drop/get_unassigned_events"
 
-  get "event/remove_download"
+  get "dragon_drop/get_assigned_events"
 
-  get "event/grade_event"
+  get "events/add_question"
 
-  #get "event/show"
-  resources :events
+  get "event/show"
+
   devise_for :users
+
+end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -117,4 +121,3 @@ SuperWhiteboard::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
-end
