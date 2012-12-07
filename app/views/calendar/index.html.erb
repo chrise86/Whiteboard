@@ -1,18 +1,89 @@
-<h1>Calendar for <%= @user.first_name + " " + @user.last_name %></h1>
+<script>
+    $(function() {
+        $( "#modal" ).dialog({ autoOpen: false, draggable: false, modal: true });
 
-<p>Here is the information:</p>
+        $(".event").on("click", function(event) {
+            // Stop the click from loading a new page
+            event.preventDefault();
 
-<ul>
-    <% @section.each do |s|  %>
-      <% @section_names.each_with_index do |n, index| %>
-        <li>
-          <%= n %>
-          <ul>
-            <% @events_per_section[index].each do |e|  %>
-                <li><%= e.title %></li>
-            <% end %>
-          </ul>
-        </li>
-      <% end %>
+            // Get the URL of the clicked on div
+            var eventURL = event.currentTarget.firstChild.attributes['href'].value;
+
+            // Load the URL content for the event dynamically in the modal
+            $.getJSON(eventURL, function(data) {
+                var modal = $($.find("#modal")[0]);
+
+                // Clear current contents of div
+                modal.empty();
+
+                // Add the attributes to the div:
+                modal.dialog('option', 'title', data["title"]);
+                modal.append("<p>Professor: " + data["professor"] + "</p>");
+                modal.append("<p>Description: " + data["description"] + "</p>");
+                modal.append("<p>Due date: " + data["due_date"] + "</p>");
+
+                // Finally, open the modal
+                $("#modal").dialog("open");
+            }).error(function() {
+                        var modal = $($.find("#modal")[0]);
+
+                        // Clear current contents of div
+                        modal.empty();
+
+                        // Add the attributes to the div:
+                        modal.append("Error: Failed to load event.");
+                    });
+
+        });
+    });
+</script>
+
+<style>
+    <% @course_styles.each do |k| %>
+    .<%= k.first %>
+    {
+        background-color: <%= k.last %>;
+    }
     <% end %>
-</ul>
+
+  table td
+  {
+      vertical-align:text-top;
+      background: #f5f5dc;
+  }
+</style>
+
+<h1 style="text-align: center;">Whiteboard ... or something</h1>
+
+<h3 style="text-align: center;"><%= @month %></h3>
+
+<%= link_to "Previous Month", :controller => "calendar", :action => "index", :date => (@date - 1.month).to_s %>
+ | <%= link_to "Next Month", :controller => "calendar", :action => "index", :date => (@date + 1.month).to_s %>
+
+<table style="margin-left: auto; margin-right: auto;">
+    <tr>
+        <% Date::DAYNAMES.each do |day| %>
+            <td><%= day %></td>
+        <% end %>
+    </tr>
+
+    <% 5.times do |row| %>
+      <tr style="height:100px;">
+        <% 7.times do |column| %>
+            <td style="width:150px" id="">
+              <%= @calendar_start_day.day %>
+              <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day and se[:end_date].month == @calendar_start_day.month }.each do |se| %>
+                <div class="<%= se[:course_name] %> event">
+                  <%= link_to se[:event_title], :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] %>
+                </div>
+              <% end %>
+            </td>
+            <% @calendar_start_day += 1.day %>
+        <% end %>
+      </tr>
+    <% end %>
+</table>
+
+<p><%= link_to "Dragon Drop", :controller => "dragon_drop", :action => "index" %></p>
+
+<div id="modal">No events loaded.</div>

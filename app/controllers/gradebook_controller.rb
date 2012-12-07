@@ -9,14 +9,14 @@ class GradebookController < ApplicationController
   #def remove_category (category_id,section_id)
   #  Category.where(:section_id => section_id,:id => category_id).destroy
   #end
-  #adds an event to a gradebook
+  #adds an events to a gradebook
   def add_event(section_id,event_id)
     users = UserSection.where(:section_id => section_id)
     users.each do |u|
       Gradebook.create(:user_id => u.id, :section_id => section_id, :event_id => event_id)
     end
   end
-  # removes an event from a gradebook
+  # removes an events from a gradebook
   def remove_event(event_id)
     Gradebook.where(:event_id => event_id).destroy
   end

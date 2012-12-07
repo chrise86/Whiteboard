@@ -1,0 +1,120 @@
+<style>
+    .event{ padding: 10px; background-color:#5f9ea0; font-size:12px; margin:4px;}
+    .Event1 {width:60px; min-height:60px; margin: 2px; padding:10px; background-color:#5f9ea0; float:left; color:white;}
+    #draggableContainer{ padding:20px; text-align:center; }
+
+    .droppableDiv { width: 100px; min-height: 150px; padding: 0.5em; background-color:#C33}
+    .drophover{ background-color: #1d5987;}
+
+    table td
+    {
+        vertical-align:text-top;
+        background: #f5f5dc;
+    }
+
+</style>
+
+<script>
+    $(function() {
+        $('#draggableContainer');
+
+        // Make unassigned divs draggable
+        $($.find(".Event1")).draggable({ opacity: 0.35 , containment: 'document', cursor:'pointer', revert: true});
+
+        // Make droppableDivs droppable!
+        $($.find( ".droppableDiv")).droppable({ hoverClass: 'drophover', tolerance:'pointer',
+            over: function()
+            {
+                //execute code you want when users hover in but havent dropped
+                $('#droppableDiv').text('here');
+            },
+            out: function()
+            {
+                //execute code you want when users hover out
+                $('#droppableDiv').text('out');
+            },
+            drop: function(event, ui)
+            {
+                //drop function with ui so we can receive div data
+                var draggableid = ui.draggable.text();
+                var draggableClass = ui.draggable.attr("class");
+                var droppableDate = $(this).attr("date");
+                var droppableSectionID = $(this).attr("section_id");
+
+                $(this).append("<div class='event'>" + draggableid + "</div>");
+
+                if(draggableid == "draggableContainer")
+                {
+                    //do nothing
+                    alert("you shouldnt drag the container over the calender")
+                }
+                else
+                {
+                    alert("You've added " + draggableid + " to section " + droppableSectionID + ", to be assigned on " + droppableDate );
+                    $( this ).addClass("alert")
+                }
+            }
+        });
+    });
+</script>
+
+<%= collection_select(:course, :id, @courses, :id, :name) %>
+
+<div id="draggableContainer">
+  <% @unassigned_events.each do |course, events| %>
+
+      <%#= course.name %>
+      <% events.each do |event| %>
+          <div id="Event1" class="Event1">
+            <%= event.title %>
+          </div>
+
+      <% end %>
+
+  <% end %>
+</div>
+
+<div style="clear:both;"><br/></div>
+
+<%= link_to "Previous Week", :controller => "dragon_drop", :action => "index", :date => (@date - 1.week).to_s %>
+| <%= link_to "Next Week", :controller => "dragon_drop", :action => "index", :date => (@date + 1.week).to_s %>
+
+<!--Create the weekly section view-->
+<table>
+  <tr>
+    <td></td>
+    <!-- Generate the days of the week -->
+    <% Date::DAYNAMES.each do |day| %>
+        <td style="width:100px">
+          <%= day %>
+        </td>
+    <% end %>
+  </tr>
+  <!-- Go through each of the sections, and create a row for it -->
+  <% @sections.each do |section| %>
+      <tr>
+        <td>
+          <%= section[:section_name] %>
+        </td>
+
+        <% 7.times do |day| %>
+            <td>
+              <!-- Create the DropZone area -->
+              <div class="droppableDiv" title="Today" date=<%= @calendar_start_day + day.day %> section_id="<%= section[:section_id] %>">
+              .
+              <!-- Add events to the DropZone -->
+              <% @assigned_events.select { |event|
+                event[:end_date].wday==day and event[:section_id]==section[:section_id]}.each do |event| %>
+                  <div class="event" event_id="<%= event[:event_id] %>">
+                    <%= event[:event_title] %>
+                  </div>
+              <% end %>
+              </div>
+
+
+            </td>
+
+        <% end %>
+      </tr>
+  <% end %>
+</table>

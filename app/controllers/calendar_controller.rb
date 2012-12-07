@@ -1,30 +1,40 @@
 class CalendarController < ApplicationController
 
   def index
-    # Get a user
-    @user = User.first
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
 
-    # Get all the sections for that user
-    @section = Section.find_all_for_user(@user)
+    # Calculate the first day that appears on the calendar
+    @calendar_start_day = @date.beginning_of_month - (@date.beginning_of_month.wday)
 
-    # Get all the section names for those sections
+    # Get all sections and events
+    @sections_and_events = User.first.find_all_sections_and_their_events_formatted
 
-    @section_names = []
-    @section.each do |s|
-      @section_names << Course.find_by_id(s.course_id).name
-    end
+    # Filter to the current month only
+    @sections_and_events.select! { |i| i[:end_date] > @calendar_start_day and i[:end_date] < (@calendar_start_day + 35.days) }
 
+    # Sort by date
+    @sections_and_events.sort { |a, b| a[:end_date] <=> b[:end_date] }
 
-    # Get all the events (in an array) for every section
-    @events_per_section = {}
-    @section.each do |s|
-      @events_per_section[s.name] = SectionEvent.where(:section_id => s.id)
-    end
+    # Month string
+    @month = @date.strftime("%B %Y")
 
+    # Event div colors
+    div_colors = %w(#ff7f50 #5f9ea0 #adff2f #afeeee #ffd700)
 
+    # Section tags for CSS. The "reduce" method is used to turn this:
+    # => [{"ITEC3101"=>"#ff7f50"}, {"ITEC2401"=>"#5f9ea0"}, {"ITEC1401"=>"#adff2f"}, {"ITEC1001"=>"#afeeee"}]
+    # into this:
+    # => {"ITEC3101"=>"#ff7f50", "ITEC2401"=>"#5f9ea0", "ITEC1401"=>"#adff2f", "ITEC1001"=>"#afeeee"}
+    # More information here: http://stackoverflow.com/questions/10943909/array-of-hashes-to-hash
 
-    #require 'pry'; binding.pry
-
+    @course_styles = @sections_and_events.collect { |a| a[:course_name] }.uniq.collect.with_index { |c, i| { c => div_colors[i] } }.reduce Hash.new, :update
   end
+
+  # Returns a hash formatted as: { section => [events, events, events, etc] }
+  #def get_section_events_pairs
+  #  # Get a user
+  #  @user = User.first
+  #  respond_with @user.find_all_sections_and_their_events.collect { |s_and_es| { id: s_and_es.id, name: s_and_es } }
+  #end
 
 end
