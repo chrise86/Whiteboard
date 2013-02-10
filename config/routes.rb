@@ -62,14 +62,6 @@ SuperWhiteboard::Application.routes.draw do
 
   get "events/add_question"
 
-  get "events/remove_question"
-
-  get "events/add_new_download"
-
-  get "events/remove_download"
-
-  get "events/grade_event"
-
   get "events/show", :as => :json
 
   resource :events, :except => [:show]
