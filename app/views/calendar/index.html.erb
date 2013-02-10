@@ -73,9 +73,7 @@
             <td style="width:150px" id="">
               <%= @calendar_start_day.day %>
               <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day and se[:end_date].month == @calendar_start_day.month }.each do |se| %>
-                <div class="<%= se[:course_name] %> event">
-                  <%= link_to se[:event_title], :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] %>
-                </div>
+                <div class="<%= se[:course_name] %> event"><%= link_to se[:event_title], :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] %></div>
               <% end %>
             </td>
             <% @calendar_start_day += 1.day %>

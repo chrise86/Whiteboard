@@ -44,6 +44,7 @@ class Section < ActiveRecord::Base
   def Section.date_to_semester_num(date = Date.today)
     year = (date.year.to_i - 2011)*3
     if spring_semester? date
+      return year
     elsif summer_semester? date
       return year + 1
     elsif fall_semester? date
