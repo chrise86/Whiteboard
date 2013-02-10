@@ -51,8 +51,8 @@ end
 
 ################### Section #########################
 
-days1 = "123456".split ""
-days2 = "12345".split ""
+days1 = '123456'.split ''
+days2 = '12345'.split ''
 day_combinations = days1.combination(1).to_a.push(*days2.combination(2).to_a).push(*days2.combination(3).to_a)
 day_combinations.collect! {|meeting_days| meeting_days.join}
 
@@ -60,7 +60,7 @@ Course.all.each do |course|
   15.times do |section|
     Section.create(course_id: course.id,
                    section_number: section + 1,
-                   semester_id: rand(0..5),
+                   semester_id: rand(2..7), # The semester ID needed updating to reflect the current year
                    meeting_days: day_combinations.sample)
   end
 end
