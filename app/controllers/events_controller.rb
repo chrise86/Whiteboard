@@ -1,6 +1,8 @@
 class EventsController < ApplicationController
   #used to create a new event
 
+  respond_to :json
+
 def create
   #require "pry"; binding.pry
   @event = Event.new(params[:event])
@@ -37,9 +39,24 @@ def remove_download
   #will be added later
 end
 
-def show
-  #shows an event
-  @event = Event.find_by_id(id)
-end
+  def show
+    params[:event_id] ||= 1
+    params[:section_id] ||= 1
+
+    #shows an events
+    @event = Event.find_by_id(params[:event_id])
+    @section_event = SectionEvent.where(:section_id => params[:section_id], :event_id => params[:event_id]).first
+    @professor_event = ProfessorEvent.where(:event_id => params[:event_id]).first
+    @professor = User.find_by_id(@professor_event.user_id) if @professor_event
+
+    response = {
+        :title => @event.title,
+        :professor => @professor ? @professor.first_name + " " + @professor.last_name : "No professor available",
+        :description => !@event.description.blank? ? @event.description : "No description provided.",
+        :due_date => @section_event.end_date.strftime("%A, %b %d %Y")
+    }
+
+    respond_with response
+  end
 
 end
