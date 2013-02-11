@@ -10,6 +10,7 @@ gem 'devise'
 gem 'composite_primary_keys'
 gem 'pry'
 gem 'pry-nav'
+gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails', :git => 'git://github.com/anjlab/bootstrap-rails.git'
 
 
 # Gems used only for assets and not required

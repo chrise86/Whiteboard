@@ -1,38 +1,35 @@
 <script>
     $(function() {
-        $( "#modal" ).dialog({ autoOpen: false, draggable: false, modal: true });
+        $('.event').on('click', function(event) {
+            var section_id = event.currentTarget.attributes['section_id'].value;
+            var event_id = event.currentTarget.attributes['event_id'].value;
+            var eventURL = '/events/show?event_id=' + event_id + '&section_id=' + section_id;
 
-        $(".event").on("click", function(event) {
-            // Stop the click from loading a new page
-            event.preventDefault();
+            var modal = $('#myModal');
+            var modalTitle = modal.find('#myModalLabel');
+            var modalBody = modal.find('.modal-body');
 
-            // Get the URL of the clicked on div
-            var eventURL = event.currentTarget.firstChild.attributes['href'].value;
-
-            // Load the URL content for the event dynamically in the modal
+//          Load the URL content for the event dynamically in the modal
             $.getJSON(eventURL, function(data) {
-                var modal = $($.find("#modal")[0]);
 
-                // Clear current contents of div
-                modal.empty();
+                // Set the modal's title
+                modalTitle.empty();
+                modalTitle.append(data["title"]);
 
-                // Add the attributes to the div:
-                modal.dialog('option', 'title', data["title"]);
-                modal.append("<p>Professor: " + data["professor"] + "</p>");
-                modal.append("<p>Description: " + data["description"] + "</p>");
-                modal.append("<p>Due date: " + data["due_date"] + "</p>");
-
-                // Finally, open the modal
-                $("#modal").dialog("open");
+                // Set the modal's body
+                modalBody.empty();
+                modalBody.append("<p>Professor: " + data["professor"] + "</p>");
+                modalBody.append("<p>Description: " + data["description"] + "</p>");
+                modalBody.append("<p>Due date: " + data["due_date"] + "</p>");
             }).error(function() {
-                        var modal = $($.find("#modal")[0]);
+                // Set the modal's title
+                modalTitle.empty();
+                modalTitle.append("Well this is embarrassing");
 
-                        // Clear current contents of div
-                        modal.empty();
-
-                        // Add the attributes to the div:
-                        modal.append("Error: Failed to load event.");
-                    });
+                // Set the modal's body
+                modalBody.empty();
+                modalBody.append("<p>There was an error loading the content for this event. Try refreshing the page. If this doesn't work, try again later.</p>");
+            });
 
         });
     });
@@ -49,39 +46,65 @@
   table td
   {
       vertical-align:text-top;
-      background: #f5f5dc;
+      /*background: #f5f5dc;*/
   }
 </style>
 
-<h1 style="text-align: center;">Whiteboard ... or something</h1>
+<div class="row">
+    <div class="span8"><h2><%= @month %></h2></div>
+    <div class="span4">
+      <%= link_to "Previous Month", :controller => "calendar", :action => "index", :date => (@date - 1.month).to_s %>
+      | <%= link_to "Next Month", :controller => "calendar", :action => "index", :date => (@date + 1.month).to_s %>
+    </div>
+</div>
 
-<h3 style="text-align: center;"><%= @month %></h3>
+<div class="row">
+  <div class="span2">
+    <h4>Filters</h4>
+    <p>Here is some dummy text of what this container could hold. There will be abilities to filter your classes and more!</p>
 
-<%= link_to "Previous Month", :controller => "calendar", :action => "index", :date => (@date - 1.month).to_s %>
- | <%= link_to "Next Month", :controller => "calendar", :action => "index", :date => (@date + 1.month).to_s %>
-
-<table style="margin-left: auto; margin-right: auto;">
-    <tr>
+    <a href="#" class="btn btn-danger"><i class="icon-white icon-warning-sign"></i> Delete Event</a>
+    <a href="#" class="btn btn-success btn-large"><i class="icon-white icon-ok"></i> Event 2</a>
+  </div>
+  <div class="span10">
+    <table>
+      <tr>
         <% Date::DAYNAMES.each do |day| %>
-            <td><%= day %></td>
-        <% end %>
-    </tr>
-
-    <% 5.times do |row| %>
-      <tr style="height:100px;">
-        <% 7.times do |column| %>
-            <td style="width:150px" id="">
-              <%= @calendar_start_day.day %>
-              <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day and se[:end_date].month == @calendar_start_day.month }.each do |se| %>
-                <div class="<%= se[:course_name] %> event"><%= link_to se[:event_title], :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] %></div>
-              <% end %>
-            </td>
-            <% @calendar_start_day += 1.day %>
+            <td><h4><%= day %></h4></td>
         <% end %>
       </tr>
-    <% end %>
-</table>
 
-<p><%= link_to "Dragon Drop", :controller => "dragon_drop", :action => "index" %></p>
+      <% 5.times do |row| %>
+          <tr style="height:100px;">
+            <% 7.times do |column| %>
+                <td style="width:150px" id="">
+                  <%= @calendar_start_day.day %>
+                  <% @sections_and_events.select { |se| se[:end_date].day == @calendar_start_day.day and se[:end_date].month == @calendar_start_day.month }.each do |se| %>
+                      <br/>
+                      <!--{ :controller => "events", :action => "show", :event_id => se[:event_id], :section_id => se[:section_id] }-->
+                      <%= link_to se[:event_title], "#myModal", :role => "button", :class => "btn event", 'data-toggle' => "modal", :event_id => se[:event_id], :section_id => se[:section_id] %>
 
-<div id="modal">No events loaded.</div>
+                  <% end %>
+                </td>
+                <% @calendar_start_day += 1.day %>
+            <% end %>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">No event loaded</h3>
+  </div>
+  <div class="modal-body">
+    <p>Click on an event in the calendar to load its details.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Take this exam</button>
+  </div>
+</div>
